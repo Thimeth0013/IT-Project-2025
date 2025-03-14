@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 // Import routes
-const testRoutes = require('./routes/test');
+const supplierRoutes = require('./routes/suppliers');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 // Routes
-app.use('/api/test', testRoutes);
+app.use('/api/suppliers', supplierRoutes);
 
 // Start server
 app.listen(PORT, () => {

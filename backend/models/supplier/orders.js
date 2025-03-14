@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const OrderSchema = new mongoose.Schema({
-    supplierID: ObjectId,
+    supplierID: mongoose.Schema.Types.ObjectId,
     orderDetails: String,
-    itemID: ObjectId,
+    itemID: mongoose.Schema.Types.ObjectId,
     quantity: Number,
     unitPrice: Number,
 });
