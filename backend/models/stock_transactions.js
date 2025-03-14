@@ -7,5 +7,5 @@ const TransactionSchema = new mongoose.Schema({
     remarks: String,
 });
 
-const TransactionModel = mongoose.model('orders', TransactionSchema);
+const TransactionModel = mongoose.model('stock_transations', TransactionSchema);
 module.exports = TransactionModel;
