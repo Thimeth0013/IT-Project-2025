@@ -1,13 +1,13 @@
 const router = require('express').Router();
-const suppliersModel = require('../models/supplier/suppliers');
+const itemsModel = require('../models/supplier/items');
 
-// Get all suppliers
+// Get all items
 router.get('/', async (req, res) => {
     try {
-        const suppliers = await suppliersModel.find({});
+        const items = await itemsModel.find({});
         return res.status(200).json({
             success: true,
-            suppliers
+            items
         });
     } catch (err) {
         return res.status(400).json({

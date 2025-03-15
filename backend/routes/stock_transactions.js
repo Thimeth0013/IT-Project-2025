@@ -1,13 +1,13 @@
 const router = require('express').Router();
-const suppliersModel = require('../models/supplier/suppliers');
+const stockTransactionsModel = require('../models/supplier/stock_transactions');
 
-// Get all suppliers
+// Get all stock transactions
 router.get('/', async (req, res) => {
     try {
-        const suppliers = await suppliersModel.find({});
+        const stockTransactions = await stockTransactionsModel.find({});
         return res.status(200).json({
             success: true,
-            suppliers
+            stockTransactions
         });
     } catch (err) {
         return res.status(400).json({
