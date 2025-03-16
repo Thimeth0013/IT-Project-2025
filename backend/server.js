@@ -4,7 +4,10 @@ const cors = require('cors');
 require('dotenv').config();
 
 // Import routes
-const testRoutes = require('./routes/test');
+const itemRoutes = require('./routes/items');
+const orderRoutes = require('./routes/orders');
+const stockTransactionRoutes = require('./routes/stock_transactions');
+const supplierRoutes = require('./routes/suppliers');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -23,7 +26,10 @@ app.get('/', (req, res) => {
 });
 
 // Routes
-app.use('/api/test', testRoutes);
+app.use('/api/items', itemRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/stock_transactions', stockTransactionRoutes);
+app.use('/api/suppliers', supplierRoutes);
 
 // Start server
 app.listen(PORT, () => {
