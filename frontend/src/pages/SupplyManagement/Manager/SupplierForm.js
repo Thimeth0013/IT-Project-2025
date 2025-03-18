@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const SupplierForm = () => {
@@ -8,9 +9,7 @@ const SupplierForm = () => {
         name: '',
         phone: '',
         email: '',
-        address: '',
-        totalAmmount: '',
-        status: 'Active'
+        address: ''
     });
     const [generatedCredentials, setGeneratedCredentials] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -76,10 +75,10 @@ const SupplierForm = () => {
                             <button
                                 onClick={() => {
                                     const credentials = `
-Supplier Credentials
--------------------
-Username: ${generatedCredentials.username}
-Password: ${generatedCredentials.password}
+                                        Supplier Credentials
+                                        -------------------
+                                        Email: ${generatedCredentials.email}
+                                        Password: ${generatedCredentials.password}
                                     `.trim();
                                     navigator.clipboard.writeText(credentials);
                                     alert('Credentials copied to clipboard!');
@@ -104,7 +103,7 @@ Password: ${generatedCredentials.password}
     return (
         <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-6">Add New Supplier</h2>
-            
+
             {error && (
                 <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-red-600">
                     {error}
@@ -134,6 +133,7 @@ Password: ${generatedCredentials.password}
                     <input
                         type="tel"
                         name="phone"
+                        maxLength={10}
                         value={formData.phone}
                         onChange={handleChange}
                         required
@@ -168,44 +168,25 @@ Password: ${generatedCredentials.password}
                     />
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Total Amount
-                    </label>
-                    <input
-                        type="number"
-                        name="totalAmmount"
-                        value={formData.totalAmmount}
-                        onChange={handleChange}
-                        required
-                        className="w-full p-2 border rounded-md"
-                    />
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Status
-                    </label>
-                    <select
-                        name="status"
-                        value={formData.status}
-                        onChange={handleChange}
-                        className="w-full p-2 border rounded-md"
-                    >
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
-                </div>
-
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className={`w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 ${
-                        loading ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
+                <div
+                    className="flex justify-between items-center gap-2"
                 >
-                    {loading ? 'Adding Supplier...' : 'Add Supplier'}
-                </button>
+                    <Link
+                        to="/suppliers/suppliers"
+                        className="w-full py-2 px-4 bg-gray-200 text-black rounded-md hover:bg-gray-300 text-center"
+                    >
+                        Cancel
+                    </Link>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-center ${loading ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                    >
+                        {loading ? 'Adding Supplier...' : 'Add Supplier'}
+                    </button>
+                </div>
+
             </form>
         </div>
     );

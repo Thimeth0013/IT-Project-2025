@@ -10,18 +10,18 @@ import BookingForm from './components/customerWebsite/BookingForm';
 // import About from './pages/AboutC'
 
 // import Supplier
-import ItemDashboard from './components/SupplyManagement/ItemDashboard';
-import MainDashboard from './components/SupplyManagement/MainDashboard';
-import OrderDashboard from './components/SupplyManagement/OrderDashboard';
-import OrderForm from './components/SupplyManagement/OrderForm';
-import StockTransactionDashboard from './components/SupplyManagement/StockTransactionDashboard';
-import SupplierDashboard from './components/SupplyManagement/SupplierDashboard';
-import SupplierForm from './components/SupplyManagement/SupplierForm';
-import SupplyDashboard from './components/SupplyManagement/SupplyDashboard';
-import SupplyOrderList from './components/SupplyManagement/SupplyOrderList';
+import ItemDashboard from './pages/SupplyManagement/Manager/ItemDashboard';
+import SuppliersHomepage from './pages/SupplyManagement/Manager/SuppliersHomepage';
+import OrderDashboard from './pages/SupplyManagement/Manager/OrderDashboard';
+import OrderForm from './pages/SupplyManagement/Manager/OrderForm';
+import StockTransactionDashboard from './pages/SupplyManagement/Manager/StockTransactionDashboard';
+import SupplierDashboard from './pages/SupplyManagement/Manager/SupplierDashboard';
+import SupplierForm from './pages/SupplyManagement/Manager/SupplierForm';
+import SupplyDashboard from './pages/SupplyManagement/Manager/SupplyDashboard';
+import SupplyOrderList from './pages/SupplyManagement/Manager/SupplyOrderList';
 
 // import Supply
-import SupplierOrderDashboard from './components/Supply/SupplierOrderDashboard';
+import SupplierOrderDashboard from './pages/SupplyManagement/Supplier/SupplierOrderDashboard';
 // import SupplyDashboard from './components/Supply/SupplyDashboard';
 // import SupplyOrderList from './components/Supply/SupplyOrderList';
 
@@ -36,7 +36,7 @@ function App() {
         {/* <Route path='/About' element={<About/>}/> */}
 
         {/* Supplier */}
-        <Route path="/suppliers" element={<MainDashboard />} />
+        <Route path="/suppliers" element={<SuppliersHomepage />} />
         <Route path="/suppliers/items" element={<ItemDashboard />} />
         <Route path="/suppliers/orders" element={<OrderDashboard />} />
         <Route path="/suppliers/orders/new" element={<OrderForm />} />

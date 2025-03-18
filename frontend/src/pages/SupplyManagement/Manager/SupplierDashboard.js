@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const SupplierDashboard = () => {
-  const navigate = useNavigate();
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -35,17 +34,6 @@ const SupplierDashboard = () => {
       totalAmount: supplierData.reduce((sum, s) => sum + (s.totalAmmount || 0), 0)
     };
     setStats(stats);
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Active':
-        return 'bg-green-100 text-green-800';
-      case 'Pending':
-        return 'bg-orange-100 text-orange-800';
-      default:
-        return 'bg-red-100 text-red-800';
-    }
   };
 
   const handleDelete = async (id) => {
@@ -88,17 +76,6 @@ return (
     </div>
 
 
-
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-gray-500 text-sm">Total Suppliers</h3>
-          <p className="text-3xl font-bold">{stats.totalSuppliers}</p>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-gray-500 text-sm">Active Suppliers</h3>
-          <p className="text-3xl font-bold">{stats.activeSuppliers}</p>
-        </div>
-      </div> */}
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <table className="min-w-full">
