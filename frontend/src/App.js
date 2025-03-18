@@ -10,7 +10,7 @@ import ViewList from './components/BookingList'
 import CompanyOverview from './pages/AboutC'
 
 // import Supplier
-import ItemDashboard from './pages/SupplyManagement/Manager/ItemDashboard';
+import ItemDashboard from './pages/SupplyManagement/Manager/SuppliersItemDashboard';
 import SuppliersHomepage from './pages/SupplyManagement/Manager/SuppliersHomepage';
 import OrderDashboard from './pages/SupplyManagement/Manager/SuppliersOrderDashboard';
 import OrderForm from './pages/SupplyManagement/Manager/OrderForm';
