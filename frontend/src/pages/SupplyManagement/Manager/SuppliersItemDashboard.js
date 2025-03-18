@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import SupplierManagerNavbar from '../../../components/SupplyManagement/Navbar';
 
 function SuppliersItemDashboard() {
-  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,11 +14,7 @@ function SuppliersItemDashboard() {
     totalValue: 0
   });
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
-  const fetchItems = async () => {
+  const fetchItems = useCallback(async () => {
     try {
       const response = await axios.get('http://localhost:8000/api/items');
       console.log('API Response:', response.data);
@@ -31,7 +26,7 @@ function SuppliersItemDashboard() {
       setError('Error fetching items: ' + (err.response?.data?.message || err.message));
       setLoading(false);
     }
-  };
+  }, []);
 
   const calculateStats = (itemData) => {
     const stats = {
@@ -54,6 +49,10 @@ function SuppliersItemDashboard() {
       }
     }
   };
+
+  useEffect(() => {
+    fetchItems();
+  }, [fetchItems]);
 
   if (loading) return <div className="text-center p-4">Loading...</div>;
   if (error) return <div className="text-red-500 text-center p-4">{error}</div>;
@@ -80,7 +79,7 @@ function SuppliersItemDashboard() {
             to="/suppliers/items/new"
             className="flex flex-row items-center gap-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
           >
-            <svg  xmlns="http://www.w3.org/2000/svg"  width={16}  height={16}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-basket-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 10l-2 -6" /><path d="M7 10l2 -6" /><path d="M12 20h-4.756a3 3 0 0 1 -2.965 -2.544l-1.255 -7.152a2 2 0 0 1 1.977 -2.304h13.999a2 2 0 0 1 1.977 2.304l-.359 2.043" /><path d="M10 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M16 19h6" /><path d="M19 16v6" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-basket-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M17 10l-2 -6" /><path d="M7 10l2 -6" /><path d="M12 20h-4.756a3 3 0 0 1 -2.965 -2.544l-1.255 -7.152a2 2 0 0 1 1.977 -2.304h13.999a2 2 0 0 1 1.977 2.304l-.359 2.043" /><path d="M10 14a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M16 19h6" /><path d="M19 16v6" /></svg>
             New Item
           </Link>
         </div>
@@ -89,12 +88,13 @@ function SuppliersItemDashboard() {
           <table className="min-w-full">
             <thead className="bg-gray-50 sticky top-0">
               <tr>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Order Details</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Supplier</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Quantity</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Unit Price</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Total</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Product</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Description</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Category</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Unit Price (Rs)</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Quantity</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Total (Rs)</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -110,24 +110,31 @@ function SuppliersItemDashboard() {
                     <div className="text-sm text-gray-900">{item.category}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">Rs.{item.price}</div>
+                    <div className="text-sm text-gray-900 text-center">Rs. {(item.price).toFixed(2)}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className={`text-sm font-medium ${item.stockQuantity > 10 ? 'text-green-600' : 'text-red-600'
+                    <div className={`text-sm font-medium text-center ${item.stockQuantity > 10 ? 'text-green-600' : 'text-red-600'
                       }`}>
                       {item.stockQuantity}
                     </div>
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900 text-center">Rs. {(item.price * item.stockQuantity).toFixed(2)}</div>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <Link to={`/items/edit/${item._id}`} className="text-indigo-600 hover:text-indigo-900 mr-4">
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(item._id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Delete
-                    </button>
+                    <span className="flex flex-row items-center gap-1">
+                      <Link to={`/items/edit/${item._id}`} className="flex flex-row items-center gap-1 text-indigo-600 hover:text-indigo-900 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
+                        Edit
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(item._id)}
+                        className="flex flex-row items-center gap-1 text-red-600 hover:text-red-900"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                        Delete
+                      </button>
+                    </span>
                   </td>
                 </tr>
               ))}
@@ -135,91 +142,6 @@ function SuppliersItemDashboard() {
           </table>
         </div>
       </div>
-
-      {/* <div className="container mx-auto p-4">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold">Item Dashboard</h1>
-            <button
-              onClick={() => navigate('/')}
-              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-            >
-              Back to Dashboard
-            </button>
-          </div>
-          <Link
-            to="/items/add"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Add New Item
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-gray-500 text-sm">Total Items</h3>
-            <p className="text-3xl font-bold">{stats.totalItems}</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-gray-500 text-sm">Total Stock</h3>
-            <p className="text-3xl font-bold">{stats.totalStock} units</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-gray-500 text-sm">Total Value</h3>
-            <p className="text-3xl font-bold">Rs.{stats.totalValue.toFixed(2)}</p>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="min-w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {items.map((item) => (
-                <tr key={item._id}>
-                  <td className="px-6 py-4">
-                    <div className="text-sm font-medium text-gray-900">{item.name}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">{item.description}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">{item.category}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">Rs.{item.price}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className={`text-sm font-medium ${item.stockQuantity > 10 ? 'text-green-600' : 'text-red-600'
-                      }`}>
-                      {item.stockQuantity}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <Link to={`/items/edit/${item._id}`} className="text-indigo-600 hover:text-indigo-900 mr-4">
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(item._id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div> */}
     </>
   );
 };

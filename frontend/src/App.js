@@ -2,11 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import HomePage from './pages/Home';
-import CustomerLayout from './components/customerWebsite/CustomerLayout';
+// import CustomerLayout from './components/customerWebsite/CustomerLayout';
 // import CustomerHome from './pages/cHome'
 import BookingForm from './components/customerWebsite/BookingForm';
-import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
-import ViewList from './components/BookingList'
+// import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
+// import ViewList from './components/BookingList'
 import CompanyOverview from './pages/AboutC'
 
 // import Supplier
