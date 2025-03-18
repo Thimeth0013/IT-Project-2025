@@ -6,7 +6,7 @@ import logo from "../../assets/Blue White Illustrative Car Wash Logo.png";
 const NavBarC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   return (
-    <nav className="fixed w-full bg-[#1a1a1a] text-white z-10 py-0">
+    <nav className="sticky top-0 w-full bg-[#1a1a1a] text-white z-10 py-0">
     <div className="container mx-auto flex items-center px-6">
         <Link to="/" className="text-2xl font-bold">
           <img src={logo} style={{height: "40px"}}/>

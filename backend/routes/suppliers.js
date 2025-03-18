@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const suppliersModel = require('../models/supplier/suppliers');
+const bcrypt = require('bcryptjs');
 
 // Get all suppliers
 router.get('/', async (req, res) => {
@@ -33,18 +34,77 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Create a supplier
+// Create a supplier with credentials
 router.post('/', async (req, res) => {
     try {
-        const supplier = await suppliersModel.create(req.body);
+        // Generate username from name
+        const username = req.body.name.toLowerCase().replace(/\s+/g, '') + 
+                        Math.floor(Math.random() * 1000);
+
+        // Generate random password
+        const password = Math.random().toString(36).slice(-8) + 
+                        Math.random().toString(36).toUpperCase().slice(-2) + 
+                        Math.floor(Math.random() * 10);
+
+        // Create supplier with credentials
+        const supplierData = {
+            ...req.body,
+            username,
+            password
+        };
+
+        const supplier = await suppliersModel.create(supplierData);
+
         return res.status(201).json({
             success: true,
-            supplier
+            supplier: {
+                ...supplier.toObject(),
+                plainPassword: password // Send plain password only in response
+            }
         });
     } catch (err) {
         return res.status(400).json({
             success: false,
-            message: err
+            message: err.message
+        });
+    }
+});
+
+// Supplier login
+router.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Find supplier by username
+        const supplier = await suppliersModel.findOne({ username });
+        if (!supplier) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid credentials'
+            });
+        }
+
+        // Check password
+        const isMatch = await bcrypt.compare(password, supplier.password);
+        if (!isMatch) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid credentials'
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            supplier: {
+                _id: supplier._id,
+                name: supplier.name,
+                username: supplier.username
+            }
+        });
+    } catch (err) {
+        return res.status(400).json({
+            success: false,
+            message: err.message
         });
     }
 });
@@ -52,7 +112,11 @@ router.post('/', async (req, res) => {
 // Update a supplier
 router.put('/:id', async (req, res) => {
     try {
-        const supplier = await suppliersModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const supplier = await suppliersModel.findByIdAndUpdate(
+            req.params.id, 
+            req.body, 
+            { new: true }
+        );
         return res.status(200).json({ success: true, supplier });
     } catch (err) {
         return res.status(400).json({ success: false, message: err });
@@ -63,7 +127,10 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         await suppliersModel.findByIdAndDelete(req.params.id);
-        return res.status(200).json( { success: true, message: 'The supplier was deleted.' });
+        return res.status(200).json({
+            success: true,
+            message: 'The supplier was deleted.'
+        });
     } catch (err) {
         return res.status(400).json({ success: false, message: err });
     }
