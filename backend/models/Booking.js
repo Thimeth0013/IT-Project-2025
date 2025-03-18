@@ -42,7 +42,7 @@ const bookingSchema = new Schema({
         type: String,
         enum: ['Active', 'Ongoing', 'Complete', 'OnHold', 'Canceled'],
         default: 'Active', // Set default status to Active
-      }
+    }
 }, { timestamps: true });
 
 //mongoose.model("Booking") is the collection aka database

@@ -89,7 +89,7 @@ const FooterC = () => {
               <li>
                 <Link
                   to="/services"
-                  className="text-gray-300 hover:text-[#E63946] transition-colors"
+                  className="text-gray-300 hover:text-[#D84040] transition-colors"
                 >
                   Tire Replacement
                 </Link>
@@ -97,7 +97,7 @@ const FooterC = () => {
               <li>
                 <Link
                   to="/services"
-                  className="text-gray-300 hover:text-[#E63946] transition-colors"
+                  className="text-gray-300 hover:text-[#D84040] transition-colors"
                 >
                   Engine Diagnostics
                 </Link>
@@ -105,7 +105,7 @@ const FooterC = () => {
               <li>
                 <Link
                   to="/services"
-                  className="text-gray-300 hover:text-[#E63946] transition-colors"
+                  className="text-gray-300 hover:text-[#D84040] transition-colors"
                 >
                   Brake Repair
                 </Link>

@@ -18,7 +18,7 @@ router.post("/addBooking", async (req, res) => {
       phoneNumber,
       email,
       mileage,
-      status: "Active",  // Default status when booking is created
+      status: "Active", // Default status when booking is created
     });
 
     await newBooking.save();
@@ -116,6 +116,18 @@ router.delete("/deleteBooking/:id", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error deleting booking" });
+  }
+});
+
+// GET - Get booked slots for a specific date
+router.get("/getBookedSlots", async (req, res) => {
+  const { date } = req.query;
+  try {
+    const bookings = await Booking.find({ bookingDate: date });
+    const bookedSlots = bookings.map((booking) => booking.bookingTime);
+    res.json({ bookedSlots });
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching booked slots" });
   }
 });
 

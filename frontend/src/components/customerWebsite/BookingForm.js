@@ -38,7 +38,7 @@ const BookingForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-white shadow-md rounded-md" style={{width: "50%"}}>
+    <form onSubmit={handleSubmit} className="p-4 bg-white shadow-md rounded-md" style={{width: "50%", paddingTop: "100px", paddingBottom: "100px"}}>
       <h2 className="text-xl font-bold mb-4">Booking Form</h2>
       <label>Name:</label>
       <input
@@ -109,7 +109,7 @@ const BookingForm = () => {
         required
       />
       <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded-md mt-4">
-        Submit Booking
+        Proceed to Payment
       </button>
     </form>
   );
