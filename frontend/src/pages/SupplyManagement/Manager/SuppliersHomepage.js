@@ -1,27 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import SupplierManagerNavbar from "../../../components/SupplyManagement/Navbar";
+
 function SuppliersHomepage() {
     return (
         <>
-            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+            <SupplierManagerNavbar />
+
+            <div className="bg-gray-100 flex items-center justify-center"
+                style={{ minHeight: "calc(100vh - 72px)" }}
+            >
                 <div className="container mx-auto px-4">
                     <div className="flex justify-center items-center gap-4 mb-12">
                         <h1 className="text-4xl font-bold">
                             Supply Management System
                         </h1>
-                        <Link
+                        {/* <Link
                             to="/suppliers/suppliers"
                             className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition-all transform hover:scale-105"
                         >
                             Supplier Orders
-                        </Link>
+                        </Link> */}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center max-w-7xl mx-auto">
                         {/* Supplier Button */}
                         <Link
-                            to="/suppliers/suppliers"
+                            to="/suppliers/all"
                             className="bg-blue-500 hover:bg-blue-600 text-white p-8 rounded-xl shadow-lg transition-all transform hover:scale-105"
                         >
                             <div className="text-center">

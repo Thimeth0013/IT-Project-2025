@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import HomePage from './pages/Home';
-import CustomerLayout from './components/customerWebsite/CustomerLayout';
+// import CustomerLayout from './components/customerWebsite/CustomerLayout';
 // import CustomerHome from './pages/cHome'
 import BookingForm from './components/customerWebsite/BookingForm';
 // import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
@@ -12,10 +12,10 @@ import BookingForm from './components/customerWebsite/BookingForm';
 // import Supplier
 import ItemDashboard from './pages/SupplyManagement/Manager/ItemDashboard';
 import SuppliersHomepage from './pages/SupplyManagement/Manager/SuppliersHomepage';
-import OrderDashboard from './pages/SupplyManagement/Manager/OrderDashboard';
+import OrderDashboard from './pages/SupplyManagement/Manager/SuppliersOrderDashboard';
 import OrderForm from './pages/SupplyManagement/Manager/OrderForm';
 import StockTransactionDashboard from './pages/SupplyManagement/Manager/StockTransactionDashboard';
-import SupplierDashboard from './pages/SupplyManagement/Manager/SupplierDashboard';
+import SuppliersAll from './pages/SupplyManagement/Manager/SuppliersAll';
 import SupplierForm from './pages/SupplyManagement/Manager/SupplierForm';
 import SupplyDashboard from './pages/SupplyManagement/Manager/SupplyDashboard';
 import SupplyOrderList from './pages/SupplyManagement/Manager/SupplyOrderList';
@@ -28,7 +28,7 @@ import SupplierOrderDashboard from './pages/SupplyManagement/Supplier/SupplierOr
 function App() {
   return (
     <Router>
-      <CustomerLayout>
+      {/* <CustomerLayout> */}
       <Routes>
         <Route path='/' element={<HomePage/>} />
         {/* <Route path="/SlotSelectBooking" element={<SlotSelection />} /> */}
@@ -37,11 +37,11 @@ function App() {
 
         {/* Supplier */}
         <Route path="/suppliers" element={<SuppliersHomepage />} />
+        <Route path="/suppliers/all" element={<SuppliersAll />} />
         <Route path="/suppliers/items" element={<ItemDashboard />} />
         <Route path="/suppliers/orders" element={<OrderDashboard />} />
         <Route path="/suppliers/orders/new" element={<OrderForm />} />
         <Route path="/suppliers/stock-transactions" element={<StockTransactionDashboard />} />
-        <Route path="/suppliers/suppliers" element={<SupplierDashboard />} />
         <Route path="/suppliers/new" element={<SupplierForm />} />
         <Route path="/suppliers/supply" element={<SupplyDashboard />} />
         <Route path="/suppliers/supply/orders" element={<SupplyOrderList />} />
@@ -51,7 +51,7 @@ function App() {
         <Route path="/supply/supply" element={<SupplyDashboard />} />
         <Route path="/supply/supply/orders" element={<SupplyOrderList />} />
       </Routes>
-      </CustomerLayout>
+      {/* </CustomerLayout> */}
     </Router>
   );
 }
