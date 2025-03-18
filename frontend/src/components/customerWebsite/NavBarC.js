@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MenuIcon, XIcon, UserIcon, Bold } from 'lucide-react'
+import { MenuIcon, XIcon, LogIn, UserCheck, UserIcon, Bold } from 'lucide-react'
 import logo from "../../assets/Blue White Illustrative Car Wash Logo.png";
 
 const NavBarC = () => {
@@ -14,7 +14,7 @@ const NavBarC = () => {
         
         {/* Desktop menu - centered */}
         <div className="hidden md:flex items-center justify-center flex-1">
-          <div className="flex items-center space-x-12" style={{marginRight: "50px", fontWeight: "500"}}>
+          <div className="flex items-center space-x-12" style={{marginLeft: "180px", fontWeight: "500"}}>
             <Link to="/" className="hover:text-[#D84040] transition-colors">
               Home
             </Link>
@@ -28,7 +28,7 @@ const NavBarC = () => {
               About
             </Link>
             <Link
-              to="/about#contact"
+              to="/contact"
               className="hover:text-[#D84040] transition-colors"
             >
             Contact
@@ -36,15 +36,23 @@ const NavBarC = () => {
           </div>
         </div>
         
-        {/* User profile icon - moved to the right */}
-        <div className="hidden md:block">
-          <Link
-            to="/profile"
-            className="hover:text-[#E63946] transition-colors p-2 rounded-full hover:bg-white/10"
-          >
-            <UserIcon size={24} />
-          </Link>
-        </div>
+        {/* Login and SignUp */}
+        <div className="flex flex-wrap gap-4">
+                <Link
+                  to="/LoginC"
+                  className="bg-[#8E1616] hover:bg-[#D84040] text-white py-2 px-4 font-medium flex items-center transition-colors"
+                >
+                  Login
+                  <LogIn size={24} className="ml-2" />
+                </Link>
+                <Link
+                  to="/SignUpC"
+                  className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1d1616] px-4 py-2 font-medium transition-colors flex gap-2"
+                >
+                  SignUp
+                  <UserCheck size={24} className="ml-2" />
+                </Link>
+              </div>
         
         {/* Mobile menu button */}
         <button
@@ -84,20 +92,11 @@ const NavBarC = () => {
             </Link>
 
             <Link
-              to="/about#contact"
+              to="/contact"
               className="hover:text-[#E63946] transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
-            </Link>
-
-            <Link
-              to="/profile"
-              className="flex items-center hover:text-[#E63946] transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <UserIcon size={24} className="mr-2" />
-              <span>Profile</span>
             </Link>
           </div>
         </div>
