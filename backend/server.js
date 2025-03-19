@@ -8,6 +8,8 @@ const itemRoutes = require('./routes/items');
 const orderRoutes = require('./routes/orders');
 const stockTransactionRoutes = require('./routes/stock_transactions');
 const supplierRoutes = require('./routes/suppliers');
+
+const pettycashRoutes = require('./routes/pettycash');
 const bookingtRoutes = require('./routes/bookingRoutes')
 const authRoutes = require('./routes/authRoutes');
 
@@ -32,6 +34,9 @@ app.use('/api/items', itemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/stock_transactions', stockTransactionRoutes);
 app.use('/api/suppliers', supplierRoutes);
+app.use('/api/booking', bookingtRouter);
+app.use('/api/registerc', registercRouter);
+app.use('/api/pettycash', pettycashRoutes);
 app.use('/api/booking', bookingtRoutes);
 app.use('/api/authRoutes', authRoutes)
 

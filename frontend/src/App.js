@@ -12,6 +12,9 @@ import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp compo
 // System Website
 import Admin  from './pages/SystemWebsite/Admin';
 
+import PettyCashHome from  './pages/PettyCashHome';
+import PettyCashDashboard from './pages/PettyCashDashboard';
+
 // import Supplier
 import ItemDashboard from './pages/SupplyManagement/Manager/SupplierDashboard';
 import SuppliersHomepage from './pages/SupplyManagement/Manager/SuppliersHomepage';
@@ -62,7 +65,13 @@ function App() {
         {/* Admin */}
         <Route path='/Admin' element={<Admin/>}/>
         <Route path="/AddUserForm" element={<AddUserForm/>} />
+      
+      
+     <Route path="/pettycash" element={<PettyCashHome />} />
+     <Route path="/pettycash/new" element={<PettyCashDashboard />} />
+      {/* </PettyCash> */}
       </Routes>
+    
     </Router>
 )}
 
