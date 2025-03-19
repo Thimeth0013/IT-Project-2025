@@ -52,12 +52,14 @@ function App() {
         <Route path="/supply" element={<SupplierOrderDashboard />} />
         <Route path="/supply/supply" element={<SupplyDashboard />} />
         <Route path="/supply/supply/orders" element={<SupplyOrderList />} />
-      </Routes>
+      
       {/* </CustomerLayout> */}
-
-     {/* </PettyCash> */}
+      
      <Route path="/pettycash" element={<PettyCashHome />} />
      <Route path="/pettycash/new" element={<PettyCashDashboard />} />
+      {/* </PettyCash> */}
+      </Routes>
+    
     </Router>
   );
 }
