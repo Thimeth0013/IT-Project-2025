@@ -1,8 +1,6 @@
 const router = require('express').Router();
-const itemsModel = require('../models/supplier/items');
-const ordersModel = require('../models/supplier/orders');
-const stockTransactionsModel = require('../models/supplier/stock_transactions');
 const suppliersModel = require('../models/supplier/suppliers');
+const bcrypt = require('bcryptjs');
 
 // Get all suppliers
 router.get('/', async (req, res) => {
@@ -20,13 +18,13 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Get all items
-router.get('/items', async (req, res) => {
+// Get a supplier by ID
+router.get('/:id', async (req, res) => {
     try {
-        const items = await itemsModel.find({});
+        const supplier = await suppliersModel.findById(req.params.id);
         return res.status(200).json({
             success: true,
-            items
+            supplier
         });
     } catch (err) {
         return res.status(400).json({
@@ -36,35 +34,105 @@ router.get('/items', async (req, res) => {
     }
 });
 
-// Get all orders
-router.get('/orders', async (req, res) => {
+// Create a supplier with credentials
+router.post('/', async (req, res) => {
     try {
-        const orders = await ordersModel.find({});
-        return res.status(200).json({
+        // Generate username from name
+        const username = req.body.name.toLowerCase().replace(/\s+/g, '') + 
+                        Math.floor(Math.random() * 1000);
+
+        // Generate random password
+        const password = Math.random().toString(36).slice(-8) + 
+                        Math.random().toString(36).toUpperCase().slice(-2) + 
+                        Math.floor(Math.random() * 10);
+
+        // Create supplier with credentials
+        const supplierData = {
+            ...req.body,
+            username,
+            password
+        };
+
+        const supplier = await suppliersModel.create(supplierData);
+
+        return res.status(201).json({
             success: true,
-            orders
+            supplier: {
+                ...supplier.toObject(),
+                plainPassword: password // Send plain password only in response
+            }
         });
     } catch (err) {
         return res.status(400).json({
             success: false,
-            message: err
+            message: err.message
         });
     }
 });
 
-// Get all stock transactions
-router.get('/stock_transactions', async (req, res) => {
+// Supplier login
+router.post('/login', async (req, res) => {
     try {
-        const stockTransactions = await stockTransactionsModel.find({});
+        const { username, password } = req.body;
+
+        // Find supplier by username
+        const supplier = await suppliersModel.findOne({ username });
+        if (!supplier) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid credentials'
+            });
+        }
+
+        // Check password
+        const isMatch = await bcrypt.compare(password, supplier.password);
+        if (!isMatch) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid credentials'
+            });
+        }
+
         return res.status(200).json({
             success: true,
-            stockTransactions
+            supplier: {
+                _id: supplier._id,
+                name: supplier.name,
+                username: supplier.username
+            }
         });
     } catch (err) {
         return res.status(400).json({
             success: false,
-            message: err
+            message: err.message
         });
+    }
+});
+
+// Update a supplier
+router.put('/:id', async (req, res) => {
+    try {
+        const supplier = await suppliersModel.findByIdAndUpdate(
+            req.params.id, 
+            req.body, 
+            { new: true }
+        );
+        return res.status(200).json({ success: true, supplier });
+    } catch (err) {
+        return res.status(400).json({ success: false, message: err });
+    }
+});
+
+// Delete a supplier
+router.delete('/:id', async (req, res) => {
+    try {
+        await suppliersModel.findByIdAndDelete(req.params.id);
+        return res.status(200).json({
+            success: true,
+            message: 'The supplier was deleted.'
+        });
+    } catch (err) {
+        return res.status(400).json({ success: false, message: err });
     }
 });
 

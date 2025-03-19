@@ -1,13 +1,38 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-const SupplierSchema = new mongoose.Schema({
-    name: String,
-    phone: Number,
-    email: String,
-    address: String,
-    totalAmmount: Number,
-    status: String,
+const supplierSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    }
+}, {
+    timestamps: true
 });
 
-const SupplierModel = mongoose.model('suppliers', SupplierSchema);
-module.exports = SupplierModel;
+// Hash password before saving
+supplierSchema.pre('save', async function(next) {
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
+});
+
+module.exports = mongoose.model('suppliers', supplierSchema);
