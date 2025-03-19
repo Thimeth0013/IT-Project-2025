@@ -22,13 +22,18 @@ const supplierSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    role: {
+        type: String,
+        enum: ['Admin', 'Customer', 'Customer Manager', 'Supplier', 'Supplier Manager', 'Employee Manager', 'Finance Manager'], // List of allowed roles
+        default: 'Supplier'
     }
 }, {
     timestamps: true
 });
 
 // Hash password before saving
-supplierSchema.pre('save', async function(next) {
+supplierSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 10);
     }
