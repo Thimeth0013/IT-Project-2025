@@ -8,8 +8,8 @@ const itemRoutes = require('./routes/items');
 const orderRoutes = require('./routes/orders');
 const stockTransactionRoutes = require('./routes/stock_transactions');
 const supplierRoutes = require('./routes/suppliers');
-const bookingtRouter = require('./routes/bookingRoutes')
-const registercRouter = require('./routes/registercRoutes');
+const bookingtRoutes = require('./routes/bookingRoutes')
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -32,8 +32,8 @@ app.use('/api/items', itemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/stock_transactions', stockTransactionRoutes);
 app.use('/api/suppliers', supplierRoutes);
-app.use('/api/booking', bookingtRouter);
-app.use('/api/registerc', registercRouter);
+app.use('/api/booking', bookingtRoutes);
+app.use('/api/authRoutes', authRoutes)
 
 // Start server
 app.listen(PORT, () => {
