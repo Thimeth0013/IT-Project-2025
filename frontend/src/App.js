@@ -14,7 +14,7 @@ import ItemDashboard from './pages/SupplyManagement/Manager/SuppliersItemDashboa
 import SuppliersHomepage from './pages/SupplyManagement/Manager/SuppliersHomepage';
 import OrderDashboard from './pages/SupplyManagement/Manager/SuppliersOrderDashboard';
 import OrderForm from './pages/SupplyManagement/Manager/OrderForm';
-import StockTransactionDashboard from './pages/SupplyManagement/Manager/StockTransactionDashboard';
+import SuppliersStockTransactionDashboard from './pages/SupplyManagement/Manager/SuppliersStockTransactionDashboard';
 import SuppliersAll from './pages/SupplyManagement/Manager/SuppliersAll';
 import SupplierForm from './pages/SupplyManagement/Manager/SupplierForm';
 import SupplyDashboard from './pages/SupplyManagement/Manager/SupplyDashboard';
@@ -41,7 +41,7 @@ function App() {
         <Route path="/suppliers/items" element={<ItemDashboard />} />
         <Route path="/suppliers/orders" element={<OrderDashboard />} />
         <Route path="/suppliers/orders/new" element={<OrderForm />} />
-        <Route path="/suppliers/stock-transactions" element={<StockTransactionDashboard />} />
+        <Route path="/suppliers/stock-transactions" element={<SuppliersStockTransactionDashboard />} />
         <Route path="/suppliers/new" element={<SupplierForm />} />
         <Route path="/suppliers/supply" element={<SupplyDashboard />} />
         <Route path="/suppliers/supply/orders" element={<SupplyOrderList />} />
