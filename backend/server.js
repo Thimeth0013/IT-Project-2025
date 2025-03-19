@@ -34,11 +34,9 @@ app.use('/api/items', itemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/stock_transactions', stockTransactionRoutes);
 app.use('/api/suppliers', supplierRoutes);
-app.use('/api/booking', bookingtRouter);
-app.use('/api/registerc', registercRouter);
 app.use('/api/pettycash', pettycashRoutes);
 app.use('/api/booking', bookingtRoutes);
-app.use('/api/authRoutes', authRoutes)
+app.use('/api/auth', authRoutes);
 
 // Start server
 app.listen(PORT, () => {
