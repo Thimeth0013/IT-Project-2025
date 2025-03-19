@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -65,9 +66,30 @@ function App() {
         {/* Admin */}
         <Route path="/AddUserForm" element={<AddUserForm/>} />
 
+=======
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import InventoryDashboard from "./components/InventoryDashboard";
+import Addstock from "./components/addstock";
+
+
+export default function App() {
+  return (
+     <Router>
+      <Routes>
+        {/* ✅ Redirect "/" to "/inventory" */}
+        <Route path="/" element={<Navigate to="/inventory" />} />
+        <Route path="/inventory" element={<InventoryDashboard />} />
+        <Route path="/add-stock" element={<Addstock />} />
+        {/* ❌ If no route matches, show a Not Found page */}
+        <Route path="*" element={<h2>Page Not Found </h2>} />
+>>>>>>> 508a705 (Updated backend routes and added frontend module)
       </Routes>
     </Router>
   );
 }
+<<<<<<< HEAD
 
 export default App;
+=======
+>>>>>>> 508a705 (Updated backend routes and added frontend module)
