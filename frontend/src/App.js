@@ -8,6 +8,8 @@ import BookingForm from './components/customerWebsite/BookingForm';
 // import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
 // import ViewList from './components/BookingList'
 import CompanyOverview from './pages/AboutC'
+import PettyCashHome from  './pages/PettyCashHome';
+import PettyCashDashboard from './pages/PettyCashDashboard';
 
 // import Supplier
 import ItemDashboard from './pages/SupplyManagement/Manager/SuppliersItemDashboard';
@@ -52,6 +54,10 @@ function App() {
         <Route path="/supply/supply/orders" element={<SupplyOrderList />} />
       </Routes>
       {/* </CustomerLayout> */}
+
+     {/* </PettyCash> */}
+     <Route path="/pettycash" element={<PettyCashHome />} />
+     <Route path="/pettycash/new" element={<PettyCashDashboard />} />
     </Router>
   );
 }
