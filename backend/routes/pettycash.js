@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const PettyCash = require('../Models/pettycash');
+const PettyCash = require('../models/pettycash');
 
 
 // GET: Fetch all petty cash entries, sorted by date (newest first)
