@@ -1,13 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';
 
 import HomePage from './pages/Home';
 // import CustomerLayout from './components/customerWebsite/CustomerLayout';
 // import CustomerHome from './pages/cHome'
-import BookingForm from './components/customerWebsite/BookingForm';
+// import BookingForm from './components/customerWebsite/BookingForm';
 // import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
 // import ViewList from './components/BookingList'
-import CompanyOverview from './pages/AboutC'
+// import CompanyOverview from './pages/AboutC'
 
 // Customer Website
 // import CustomerHome from './pages/CustomerWebsite/cHome'
@@ -44,8 +45,8 @@ import SupplierOrderRequestsDashboard from './pages/SupplyManagement/Supplier/Su
 // import SupplyOrderList from './components/Supply/SupplyOrderList';
 
 //import Inventory
-import Addstock from './components/addstock';
-import InventoryDashboard from './components/inventoryDash';
+// import Addstock from './components/addstock';
+// import InventoryDashboard from './components/inventoryDash';
 
 function App() {
   return (
@@ -98,9 +99,9 @@ function App() {
       {/* </PettyCash>  and payment*/}
 
       {/* </Inventory> */}
-        <Route path="/" element={<Navigate to="/inventory" />} />  
-      <Route path="/inventory" element={<InventoryDashboard />} />
-      <Route path="/add-stock" element={<Addstock />} />
+        {/* <Route path="/" element={<Navigate to="/inventory" />} />   */}
+      {/* <Route path="/inventory" element={<InventoryDashboard />} /> */}
+      {/* <Route path="/add-stock" element={<Addstock />} /> */}
       </Routes>
       {/* </CustomerLayout> */}
     </Router>
