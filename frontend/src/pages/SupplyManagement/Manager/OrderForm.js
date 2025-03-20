@@ -2,57 +2,115 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const PREDEFINED_ITEMS = {
+  'Cleaning': [
+    { id: 'det1', name: 'Detergents' },
+    { id: 'gc1', name: 'Glass Cleaner' },
+    { id: 'tc1', name: 'Tire Cleaner' },
+    { id: 'ic1', name: 'Interior Cleaner' },
+    { id: 'mc1', name: 'Microfiber Cloths' },
+    { id: 'sp1', name: 'Sponges' }
+  ],
+  'Polishing': [
+    { id: 'cw1', name: 'Car Wax' },
+    { id: 'ts1', name: 'Tire Shine' },
+    { id: 'lc1', name: 'Leather Conditioner' },
+    { id: 'fp1', name: 'Fabric Protector' }
+  ],
+  'Oils': [
+    { id: 'eo1', name: 'Engine Oil' },
+    { id: 'bo1', name: 'Brake Oil' },
+    { id: 'to1', name: 'Transmission Oil' }
+  ],
+  'Fluids': [
+    { id: 'co1', name: 'Coolant' },
+    { id: 'wf1', name: 'Windshield Fluid' }
+  ],
+  'Filters': [
+    { id: 'af1', name: 'Air Filter' },
+    { id: 'of1', name: 'Oil Filter' },
+    { id: 'ff1', name: 'Fuel Filter' }
+  ],
+  'Tire': [
+    { id: 'tg1', name: 'Tire Gauge' },
+    { id: 'ti1', name: 'Tire Inflator' },
+    { id: 'ts1', name: 'Tire Sealant' }
+  ],
+  'Electrical': [
+    { id: 'bat1', name: 'Batteries' }
+  ],
+  'Other': [
+    { id: 'gr1', name: 'Grease' },
+    { id: 'sg1', name: 'Safety Gloves' },
+    { id: 'sgl1', name: 'Safety Glasses' }
+  ]
+};
+
 const OrderForm = () => {
   const navigate = useNavigate();
   const [suppliers, setSuppliers] = useState([]);
-  const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [formData, setFormData] = useState({
     supplierID: '',
-    orderDetails: '',
     itemID: '',
-    quantity: '',
-    unitPrice: ''
+    orderDetails: '',
+    quantity: 1,
+    unitPrice: 0,
+    status: 'Processing'
   });
 
   useEffect(() => {
-    // Fetch suppliers and items for dropdowns
-    const fetchData = async () => {
+    const fetchSuppliers = async () => {
       try {
-        const [suppliersRes, itemsRes] = await Promise.all([
-          axios.get('http://localhost:8000/api/suppliers'),
-          axios.get('http://localhost:8000/api/items')
-        ]);
-        setSuppliers(suppliersRes.data.suppliers || []);
-        setItems(itemsRes.data.items || []);
+        const response = await axios.get('http://localhost:8000/api/suppliers');
+        setSuppliers(response.data.suppliers);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        alert('Error fetching suppliers and items');
+        console.error('Error fetching suppliers:', error);
+        alert('Failed to fetch suppliers');
       }
     };
-    fetchData();
+
+    fetchSuppliers();
   }, []);
 
   // Update filtered items when supplierID changes
   useEffect(() => {
     if (formData.supplierID) {
-        // Filter items by supplierID
-        const matchingItems = items.filter(item => 
-            item.supplierID === formData.supplierID
-        );
-        setFilteredItems(matchingItems);
+      const selectedSupplier = suppliers.find(s => s._id === formData.supplierID);
+
+      if (selectedSupplier) {
+        const supplierCategory = selectedSupplier.category.trim();
+        const items = PREDEFINED_ITEMS[supplierCategory] || [];
+
+        console.log('Supplier Category:', supplierCategory);
+        console.log('Available Items:', items);
+
+        setFilteredItems(items);
+      }
     } else {
-        setFilteredItems([]);
+      setFilteredItems([]);
     }
-    // Reset item selection when supplier changes
+
     setFormData(prev => ({ ...prev, itemID: '' }));
-}, [formData.supplierID, items]);
+  }, [formData.supplierID, suppliers]);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    
+    if (name === 'itemID') {
+      // Find the selected item
+      const selectedItem = filteredItems.find(item => item.id === value);
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+        unitPrice: selectedItem ? selectedItem.price : 0
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -89,7 +147,7 @@ const OrderForm = () => {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
             required
           >
-            <option value="">Select a supplier</option>
+            <option value="" disabled>Select a supplier</option>
             {suppliers.map(supplier => (
               <option key={supplier._id} value={supplier._id}>
                 {supplier.name}
@@ -108,9 +166,9 @@ const OrderForm = () => {
             required
             disabled={!formData.supplierID}
           >
-            <option value="">Select an item</option>
+            <option value="" disabled>Select an item</option>
             {filteredItems.map(item => (
-              <option key={item._id} value={item._id}>
+              <option key={item.id} value={item.id}>
                 {item.name}
               </option>
             ))}
@@ -137,23 +195,28 @@ const OrderForm = () => {
             value={formData.quantity}
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
-            min="1"
+            min={1}
             required
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Unit Price (Rs.)</label>
-          <input
-            type="number"
-            name="unitPrice"
-            value={formData.unitPrice}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
-            min="0"
-            step="10.0"
-            required
-          />
+        <div className='py-4'>
+          <hr />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <span>
+            <h1 className='font-medium'>Unit Price</h1>
+            <p className='font-semibold text-2xl'>
+              Rs. {formData.unitPrice || 1}
+            </p>
+          </span>
+          <span className='text-right'>
+            <h1 className='font-medium'>Total Price</h1>
+            <p className='font-semibold text-2xl'>
+              Rs. {(formData.unitPrice * (parseInt(formData.quantity) || 1)).toFixed(2)}
+            </p>
+          </span>
         </div>
 
         <div className="flex gap-4 pt-4">
