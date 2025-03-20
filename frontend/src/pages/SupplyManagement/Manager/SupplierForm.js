@@ -9,7 +9,8 @@ const SupplierForm = () => {
         name: '',
         phone: '',
         email: '',
-        address: ''
+        address: '',
+        item: ''
     });
     const [generatedCredentials, setGeneratedCredentials] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -31,8 +32,9 @@ const SupplierForm = () => {
             const response = await axios.post('http://localhost:8000/api/suppliers', formData);
             if (response.data.success) {
                 setGeneratedCredentials({
-                    username: response.data.supplier.username,
-                    password: response.data.supplier.plainPassword
+                    email: response.data.supplier.email,
+                    password: response.data.supplier.plainPassword,
+                    item: formData.item
                 });
             }
         } catch (err) {
@@ -55,7 +57,7 @@ const SupplierForm = () => {
                                 <span className="font-semibold">Username:</span>
                             </p>
                             <code className="block p-2 bg-gray-50 rounded">
-                                {generatedCredentials.username}
+                                {generatedCredentials.email}
                             </code>
                         </div>
                         <div className="p-3 bg-white rounded border border-green-300">
@@ -64,6 +66,14 @@ const SupplierForm = () => {
                             </p>
                             <code className="block p-2 bg-gray-50 rounded">
                                 {generatedCredentials.password}
+                            </code>
+                        </div>
+                        <div className="p-3 bg-white rounded border border-green-300">
+                            <p className="text-sm mb-1">
+                                <span className="font-semibold">Main Item:</span>
+                            </p>
+                            <code className="block p-2 bg-gray-50 rounded">
+                                {generatedCredentials.item}
                             </code>
                         </div>
                     </div>
@@ -79,6 +89,7 @@ const SupplierForm = () => {
                                         -------------------
                                         Email: ${generatedCredentials.email}
                                         Password: ${generatedCredentials.password}
+                                        Main Item: ${generatedCredentials.item}
                                     `.trim();
                                     navigator.clipboard.writeText(credentials);
                                     alert('Credentials copied to clipboard!');
@@ -122,6 +133,21 @@ const SupplierForm = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
+                        className="w-full p-2 border rounded-md"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Item
+                    </label>
+                    <input
+                        type="text"
+                        name="item"
+                        value={formData.item}
+                        onChange={handleChange}
+                        required
+                        placeholder="Enter supplier's main item"
                         className="w-full p-2 border rounded-md"
                     />
                 </div>
@@ -172,7 +198,7 @@ const SupplierForm = () => {
                     className="flex justify-between items-center gap-2"
                 >
                     <Link
-                        to="/suppliers/suppliers"
+                        to="/suppliers/all"
                         className="w-full py-2 px-4 bg-gray-200 text-black rounded-md hover:bg-gray-300 text-center"
                     >
                         Cancel

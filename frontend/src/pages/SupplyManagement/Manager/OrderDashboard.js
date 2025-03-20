@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const OrderDashboard = () => {
-  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,10 +18,43 @@ const OrderDashboard = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/orders');
-      console.log('API Response:', response.data);
-      setOrders(response.data.orders || []);
-      calculateStats(response.data.orders || []);
+      const [ordersRes, itemsRes, suppliersRes] = await Promise.all([
+        axios.get('http://localhost:8000/api/orders'),
+        axios.get('http://localhost:8000/api/items'),
+        axios.get('http://localhost:8000/api/suppliers')
+      ]);
+
+      // Log responses to check data
+      console.log('Orders:', ordersRes.data);
+      console.log('Items:', itemsRes.data);
+      console.log('Suppliers:', suppliersRes.data);
+
+      // Create maps for items and suppliers
+      const itemMap = itemsRes.data.items.reduce((acc, item) => {
+        acc[item._id] = item.name;
+        return acc;
+      }, {});
+
+      const supplierMap = suppliersRes.data.suppliers.reduce((acc, supplier) => {
+        acc[supplier._id] = supplier.name;
+        return acc;
+      }, {});
+
+      // Combine order data with item and supplier names
+      const ordersWithDetails = ordersRes.data.orders.map(order => {
+        console.log('Processing order:', order);
+        console.log('Looking up item:', order.itemID, itemMap[order.itemID]);
+        return {
+          ...order,
+          itemName: itemMap[order.itemID] || 'Unknown Item',
+          supplierName: supplierMap[order.supplierID] || 'Unknown Supplier'
+        };
+      });
+
+      console.log('Processed orders:', ordersWithDetails);
+
+      setOrders(ordersWithDetails);
+      calculateStats(ordersWithDetails);
       setLoading(false);
     } catch (err) {
       console.error('Error details:', err.response || err);
@@ -102,6 +134,8 @@ const OrderDashboard = () => {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order Details</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Supplier</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Item</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Unit Price</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
@@ -113,6 +147,12 @@ const OrderDashboard = () => {
               <tr key={order._id}>
                 <td className="px-6 py-4">
                   <div className="text-sm text-gray-900">{order.orderDetails}</div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="text-sm text-gray-900">{order.supplierName}</div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="text-sm text-gray-900">{order.itemName}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{order.quantity}</div>
