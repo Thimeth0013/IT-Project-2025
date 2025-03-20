@@ -1,5 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import HomePage from './pages/Home';
+// import CustomerLayout from './components/customerWebsite/CustomerLayout';
+// import CustomerHome from './pages/cHome'
+import BookingForm from './components/customerWebsite/BookingForm';
+// import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
+// import ViewList from './components/BookingList'
+import CompanyOverview from './pages/AboutC'
 
 // Customer Website
 // import CustomerHome from './pages/CustomerWebsite/cHome'
@@ -20,11 +28,11 @@ import PettyCashDashboard from './pages/PettyCashDashboard';
 import PaymentGateway from './components/PaymentGateway/payment';
 
 // import Supplier
-import ItemDashboard from './pages/SupplyManagement/Manager/SupplierDashboard';
+import ItemDashboard from './pages/SupplyManagement/Manager/SuppliersItemDashboard';
 import SuppliersHomepage from './pages/SupplyManagement/Manager/SuppliersHomepage';
 import OrderDashboard from './pages/SupplyManagement/Manager/SuppliersOrderDashboard';
 import OrderForm from './pages/SupplyManagement/Manager/OrderForm';
-//import StockTransactionDashboard from './pages/SupplyManagement/Manager/StockTransactionDashboard';
+import SuppliersStockTransactionDashboard from './pages/SupplyManagement/Manager/SuppliersStockTransactionDashboard';
 import SuppliersAll from './pages/SupplyManagement/Manager/SuppliersAll';
 import SupplierForm from './pages/SupplyManagement/Manager/SupplierForm';
 import SupplyDashboard from './pages/SupplyManagement/Manager/SupplyDashboard';
@@ -42,7 +50,12 @@ import InventoryDashboard from './components/inventoryDash';
 function App() {
   return (
     <Router>
+      {/* <CustomerLayout> */}
       <Routes>
+        {/* <Route path='/' element={<HomePage/>} /> */}
+        {/* <Route path="/SlotSelectBooking" element={<SlotSelection />} /> */}
+        {/* <Route path='/BookingForm' element={<BookingForm/>}/> */}
+        {/* <Route path='/About' element={<CompanyOverview/>}/> */}
         {/* Customer Website*/}
       {/*
         <Route path='/' element={<CustomerHome/>} />
@@ -60,7 +73,7 @@ function App() {
         <Route path="/suppliers/items" element={<ItemDashboard />} />
         <Route path="/suppliers/orders" element={<OrderDashboard />} />
         <Route path="/suppliers/orders/new" element={<OrderForm />} />
-        {/*<Route path="/suppliers/stock-transactions" element={<StockTransactionDashboard />} /> */}
+        {/* <Route path="/suppliers/stock-transactions" element={<SuppliersStockTransactionDashboard />} /> */}
         <Route path="/suppliers/new" element={<SupplierForm />} />
         <Route path="/suppliers/supply" element={<SupplyDashboard />} />
         <Route path="/suppliers/supply/orders" element={<SupplyOrderList />} />
@@ -89,9 +102,9 @@ function App() {
       <Route path="/inventory" element={<InventoryDashboard />} />
       <Route path="/add-stock" element={<Addstock />} />
       </Routes>
-    
+      {/* </CustomerLayout> */}
     </Router>
-)}
+  );
+}
 
 export default App;
-
