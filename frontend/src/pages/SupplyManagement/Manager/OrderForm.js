@@ -6,6 +6,7 @@ const OrderForm = () => {
   const navigate = useNavigate();
   const [suppliers, setSuppliers] = useState([]);
   const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [formData, setFormData] = useState({
     supplierID: '',
     orderDetails: '',
@@ -32,6 +33,21 @@ const OrderForm = () => {
     fetchData();
   }, []);
 
+  // Update filtered items when supplierID changes
+  useEffect(() => {
+    if (formData.supplierID) {
+        // Filter items by supplierID
+        const matchingItems = items.filter(item => 
+            item.supplierID === formData.supplierID
+        );
+        setFilteredItems(matchingItems);
+    } else {
+        setFilteredItems([]);
+    }
+    // Reset item selection when supplier changes
+    setFormData(prev => ({ ...prev, itemID: '' }));
+}, [formData.supplierID, items]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -56,7 +72,7 @@ const OrderForm = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Create New Order</h2>
         <button
-          onClick={() => navigate('/orders')}
+          onClick={() => navigate('/suppliers/orders')}
           className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
         >
           Back to Orders
@@ -90,11 +106,12 @@ const OrderForm = () => {
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
             required
+            disabled={!formData.supplierID}
           >
             <option value="">Select an item</option>
-            {items.map(item => (
+            {filteredItems.map(item => (
               <option key={item._id} value={item._id}>
-                {item.name} - Rs.{item.price}
+                {item.name}
               </option>
             ))}
           </select>
