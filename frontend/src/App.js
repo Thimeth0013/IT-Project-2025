@@ -2,19 +2,22 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // Customer Website
-import CustomerHome from './pages/CustomerWebsite/cHome'
-import BookingForm from './components/customerWebsite/BookingForm';
-import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
-import About from './pages/CustomerWebsite/AboutC'
-import LoginC from './components/customerWebsite/LoginC';  // Your Login component
-import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp component
+// import CustomerHome from './pages/CustomerWebsite/cHome'
+// import BookingForm from './components/customerWebsite/BookingForm';
+// import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
+// import About from './pages/CustomerWebsite/AboutC'
+// import LoginC from './components/customerWebsite/LoginC';  // Your Login component
+// import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp component
 
-// System Website
-import Admin  from './pages/SystemWebsite/Admin';
-import AddUserForm from './components/systemWebsite/systemLayout/AddUserForm';
+// // System Website
+// import Admin  from './pages/SystemWebsite/Admin';
+// import AddUserForm from './components/systemWebsite/systemLayout/AddUserForm';
 
+//pettycash
 import PettyCashHome from  './pages/PettyCashHome';
 import PettyCashDashboard from './pages/PettyCashDashboard';
+// Import  payment   component
+import PaymentGateway from './components/PaymentGateway/payment';
 
 // import Supplier
 import ItemDashboard from './pages/SupplyManagement/Manager/SupplierDashboard';
@@ -41,13 +44,13 @@ function App() {
     <Router>
       <Routes>
         {/* Customer Website*/}
+      {/*
         <Route path='/' element={<CustomerHome/>} />
         <Route path="/SlotSelectBooking" element={<SlotSelection />} />
         <Route path='/BookingForm' element={<BookingForm/>}/>
         <Route path='/About' element={<About/>}/>
-        <Route path="/LoginC" element={<LoginC />} /> {/* Login route */}
-        <Route path="/SignUpC" element={<SignUpC />} /> {/* SignUp route */}
-
+        <Route path="/LoginC" element={<LoginC />} /> 
+        <Route path="/SignUpC" element={<SignUpC />} />  {/*SignUp route */}
 
         {/* System Website*/}
 
@@ -67,17 +70,22 @@ function App() {
         <Route path="/supply/supply" element={<SupplyDashboard />} />
         <Route path="/supply/supply/orders" element={<SupplyOrderList />} />
 
-        {/* Admin */}
+        {/* Admin
         <Route path='/Admin' element={<Admin/>}/>
         <Route path="/AddUserForm" element={<AddUserForm/>} />
-      
+       */}
       
      <Route path="/pettycash" element={<PettyCashHome />} />
      <Route path="/pettycash/new" element={<PettyCashDashboard />} />
-      {/* </PettyCash> */}
+     
+        {/* Add Finance Management Routes */}
+       {/* Add finance routes */}
+
+        <Route path="/payment" element={<PaymentGateway    />} />
+      {/* </PettyCash>  and payment*/}
 
       {/* </Inventory> */}
-      <Route path="/" element={<Navigate to="/inventory" />} />
+        <Route path="/" element={<Navigate to="/inventory" />} />  
       <Route path="/inventory" element={<InventoryDashboard />} />
       <Route path="/add-stock" element={<Addstock />} />
       </Routes>

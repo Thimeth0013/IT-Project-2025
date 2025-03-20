@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 const { createServer } = require("http");
-const { Server } = require("socket.io");
+//const { Server } = require("socket.io");
 
 
 // Import routes
@@ -14,8 +14,10 @@ const supplierRoutes = require('./routes/suppliers');
 const bookingtRouter = require('./routes/bookingRoutes');
 
 const pettycashRoutes = require('./routes/pettycash');
+const paymentRoutes = require('./routes/payment'); // payment
+
 const bookingtRoutes = require('./routes/bookingRoutes')
-const authRoutes = require('./routes/authRoutes');
+//const authRoutes = require('./routes/authRoutes');
 const inventoryR = require('./routes/inventoryR');
 
 const app = express();
@@ -24,7 +26,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use(cors());
 app.use(express.json());
-app.set("socketio", io);
+//app.set("socketio", io);
 
 // API Routes
 app.use("/api/inventory", inventoryR);
@@ -34,14 +36,14 @@ mongoose.connect(process.env.MONGO_URI)
 	.then(() => console.log('MongoDB connected'))
 	.catch(err => console.error('MongoDB connection error:', err));
 
-	const io = new Server(server, {
-		cors: {
-			origin: "http://localhost:3000",
-			methods: ["GET", "POST", "DELETE"],
-		},
-	});
+	// const io = new Server(server, {
+	// 	cors: {
+	// 		origin: "http://localhost:3000",
+	// 		methods: ["GET", "POST", "DELETE"],
+	// 	},
+	// });
 	
-	app.set("socketio", io); // Now it is placed after io is defined
+	//app.set("socketio", io); // Now it is placed after io is defined
 	
 
 // Welcome route
@@ -56,18 +58,20 @@ app.use('/api/stock_transactions', stockTransactionRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/pettycash', pettycashRoutes);
 app.use('/api/booking', bookingtRoutes);
-app.use('/api/authRoutes', authRoutes)
+app.use('/api', paymentRoutes);	// payment
 
-io.on("connection", (socket) => {
-    console.log("✅ Client connected:", socket.id);
+//app.use('/api/authRoutes', authRoutes)
 
-    socket.on("disconnect", () => {
-        console.log("❌ Client disconnected:", socket.id);
-    });
-});
+// io.on("connection", (socket) => {
+//     console.log("✅ Client connected:", socket.id);
+
+//     socket.on("disconnect", () => {
+//         console.log("❌ Client disconnected:", socket.id);
+//     });
+// });
 
 // Export 'io' and 'server' for use in other files
-module.exports = { io, server };
+//module.exports = { io, server };
 
 
 // Start server
