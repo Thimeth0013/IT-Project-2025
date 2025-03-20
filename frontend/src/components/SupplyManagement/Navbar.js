@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
-import { MenuIcon, XIcon, UserIcon, Bold } from 'lucide-react'
+import { MenuIcon, XIcon, UserIcon } from 'lucide-react'
 import logo from "../../assets/Blue White Illustrative Car Wash Logo.png";
 
 function SupplierManagerNavbar() {

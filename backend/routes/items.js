@@ -33,23 +33,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// ✅ New Route: Get items by Supplier ID
-router.get('/supplier/:supplierID', async (req, res) => {
-    try {
-        const items = await itemsModel.find({ supplierID: req.params.supplierID });
-        return res.status(200).json({
-            success: true,
-            items
-        });
-    } catch (err) {
-        return res.status(400).json({
-            success: false,
-            message: err.message
-        });
-    }
-});
-
-
 // Create an item
 router.post('/', async (req, res) => {
     try {

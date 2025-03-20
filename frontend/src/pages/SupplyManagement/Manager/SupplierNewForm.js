@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const SupplierForm = () => {
@@ -9,9 +8,10 @@ const SupplierForm = () => {
         name: '',
         phone: '',
         email: '',
-        address: ''
+        address: '',
+        category: '',
+        password: ''
     });
-    const [generatedCredentials, setGeneratedCredentials] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -30,10 +30,8 @@ const SupplierForm = () => {
         try {
             const response = await axios.post('http://localhost:8000/api/suppliers', formData);
             if (response.data.success) {
-                setGeneratedCredentials({
-                    username: response.data.supplier.username,
-                    password: response.data.supplier.plainPassword
-                });
+                alert('Supplier added successfully');
+                navigate('/suppliers/all');
             }
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to add supplier');
@@ -41,64 +39,6 @@ const SupplierForm = () => {
             setLoading(false);
         }
     };
-
-    if (generatedCredentials) {
-        return (
-            <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-md">
-                    <h3 className="text-lg font-semibold text-green-800 mb-4">
-                        Supplier Added Successfully!
-                    </h3>
-                    <div className="space-y-4">
-                        <div className="p-3 bg-white rounded border border-green-300">
-                            <p className="text-sm mb-1">
-                                <span className="font-semibold">Username:</span>
-                            </p>
-                            <code className="block p-2 bg-gray-50 rounded">
-                                {generatedCredentials.username}
-                            </code>
-                        </div>
-                        <div className="p-3 bg-white rounded border border-green-300">
-                            <p className="text-sm mb-1">
-                                <span className="font-semibold">Password:</span>
-                            </p>
-                            <code className="block p-2 bg-gray-50 rounded">
-                                {generatedCredentials.password}
-                            </code>
-                        </div>
-                    </div>
-                    <div className="mt-6 space-y-2">
-                        <p className="text-sm text-red-600 font-medium">
-                            ⚠️ Important: Save these credentials now! You won't be able to see them again.
-                        </p>
-                        <div className="flex gap-3">
-                            <button
-                                onClick={() => {
-                                    const credentials = `
-                                        Supplier Credentials
-                                        -------------------
-                                        Email: ${generatedCredentials.email}
-                                        Password: ${generatedCredentials.password}
-                                    `.trim();
-                                    navigator.clipboard.writeText(credentials);
-                                    alert('Credentials copied to clipboard!');
-                                }}
-                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                            >
-                                Copy to Clipboard
-                            </button>
-                            <button
-                                onClick={() => navigate('/suppliers/all')}
-                                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                            >
-                                Go to Suppliers List
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
@@ -124,6 +64,29 @@ const SupplierForm = () => {
                         required
                         className="w-full p-2 border rounded-md"
                     />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Category
+                    </label>
+                    <select
+                        name="category"
+                        value={formData.category}
+                        onChange={handleChange}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                        required
+                    >
+                        <option value="" selected disabled>Select Category</option>
+                        <option value="cleaning">Cleaning</option>
+                        <option value="Polishing">Polishing</option>
+                        <option value="Oils">Oils</option>
+                        <option value="Fluids">Fluids</option>
+                        <option value="Filters">Filters</option>
+                        <option value="Tire">Tire</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
 
                 <div>
@@ -168,11 +131,25 @@ const SupplierForm = () => {
                     />
                 </div>
 
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2 border rounded-md"
+                    />
+                </div>
+
                 <div
                     className="flex justify-between items-center gap-2"
                 >
                     <Link
-                        to="/suppliers/suppliers"
+                        to="/suppliers/all"
                         className="w-full py-2 px-4 bg-gray-200 text-black rounded-md hover:bg-gray-300 text-center"
                     >
                         Cancel
