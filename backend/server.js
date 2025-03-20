@@ -87,6 +87,10 @@ const stockTransactionRoutes = require('./routes/stock_transactions');
 const supplierRoutes = require('./routes/suppliers');
 const bookingtRouter = require('./routes/bookingRoutes')
 const registercRouter = require('./routes/registercRoutes');
+const pettycashRoutes = require('./routes/pettycash');
+const paymentRoutes = require('./routes/payment');
+//const authRoutes = require('./routes/authRoutes');
+const inventoryR = require('./routes/inventoryR');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -111,6 +115,9 @@ app.use('/api/stock_transactions', stockTransactionRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/booking', bookingtRouter);
 app.use('/api/registerc', registercRouter);
+app.use('/api/pettycash', pettycashRoutes);
+//app.use('/api/booking', bookingtRoutes);
+app.use('/api', paymentRoutes);	
 
 // Start server
 app.listen(PORT, () => {
