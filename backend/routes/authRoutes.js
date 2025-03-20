@@ -74,24 +74,125 @@ router.post("/login", async (req, res) => {
     // Redirect based on user role
     switch (user.role) {
       case "Supplier":
-        return res.status(200).json({ message: "Login successful", token, redirectTo: "/supplier-dashboard" });
+        return res.status(200).json({
+          message: "Login successful",
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+          redirectTo: "/supplier-dashboard",
+        });
       case "Supplier Manager":
-        return res.status(200).json({ message: "Login successful", token, redirectTo: "/supplier-manager-dashboard" });
+        return res.status(200).json({
+          message: "Login successful",
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+          redirectTo: "/supplier-manager-dashboard",
+        });
       case "Customer Manager":
-        return res.status(200).json({ message: "Login successful", token, redirectTo: "/customer-manager-dashboard" });
+        return res.status(200).json({
+          message: "Login successful",
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+          redirectTo: "/CustomerM",
+        });
       case "Employee Manager":
-        return res.status(200).json({ message: "Login successful", token, redirectTo: "/employee-manager-dashboard" });
+        return res.status(200).json({
+          message: "Login successful",
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+          redirectTo: "/employee-manager-dashboard",
+        });
       case "Inventory Manager":
-        return res.status(200).json({ message: "Login successful", token, redirectTo: "/inventory-manager-dashboard" });
+        return res.status(200).json({
+          message: "Login successful",
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+          redirectTo: "/inventory-manager-dashboard",
+        });
       case "Finance Manager":
-        return res.status(200).json({ message: "Login successful", token, redirectTo: "/finance-manager-dashboard" });
+        return res.status(200).json({
+          message: "Login successful",
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+          redirectTo: "/finance-manager-dashboard",
+        });
+      case "Admin":
+        return res.status(200).json({
+          message: "Login successful",
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+          redirectTo: "/Admin",
+        });
       default:
         // For "Customer" or any other role, redirect to the default route
-        return res.status(200).json({ message: "Login successful", token, redirectTo: "/" });
+        return res.status(200).json({
+          message: "Login successful",
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+          redirectTo: "/",
+        });
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error logging in" });
+  }
+});
+
+// GET - Get current user's details
+router.get("/currentUser", authMiddleware(["Customer", "Admin", "Supplier", "Supplier Manager", "Customer Manager", "Employee Manager", "Inventory Manager", "Finance Manager"]), async (req, res) => {
+  try {
+    const user = await Authentication.findById(req.userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error fetching user details" });
   }
 });
 
