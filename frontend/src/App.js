@@ -34,12 +34,12 @@ import OrderDashboard from './pages/SupplyManagement/Manager/SuppliersOrderDashb
 import OrderForm from './pages/SupplyManagement/Manager/OrderForm';
 import SuppliersStockTransactionDashboard from './pages/SupplyManagement/Manager/SuppliersStockTransactionDashboard';
 import SuppliersAll from './pages/SupplyManagement/Manager/SuppliersAll';
-import SupplierForm from './pages/SupplyManagement/Manager/SupplierForm';
+import SupplierForm from './pages/SupplyManagement/Manager/SupplierNewForm';
 import SupplyDashboard from './pages/SupplyManagement/Manager/SupplyDashboard';
 import SupplyOrderList from './pages/SupplyManagement/Manager/SupplyOrderList';
 
 // import Supply
-import SupplierOrderDashboard from './pages/SupplyManagement/Supplier/SupplierOrderDashboard';
+import SupplierOrderRequestsDashboard from './pages/SupplyManagement/Supplier/SupplierOrderRequestsDashboard';
 // import SupplyDashboard from './components/Supply/SupplyDashboard';
 // import SupplyOrderList from './components/Supply/SupplyOrderList';
 
@@ -52,7 +52,7 @@ function App() {
     <Router>
       {/* <CustomerLayout> */}
       <Routes>
-        {/* <Route path='/' element={<HomePage/>} /> */}
+        <Route path='/' element={<HomePage/>} />
         {/* <Route path="/SlotSelectBooking" element={<SlotSelection />} /> */}
         {/* <Route path='/BookingForm' element={<BookingForm/>}/> */}
         {/* <Route path='/About' element={<CompanyOverview/>}/> */}
@@ -73,13 +73,13 @@ function App() {
         <Route path="/suppliers/items" element={<ItemDashboard />} />
         <Route path="/suppliers/orders" element={<OrderDashboard />} />
         <Route path="/suppliers/orders/new" element={<OrderForm />} />
-        {/* <Route path="/suppliers/stock-transactions" element={<SuppliersStockTransactionDashboard />} /> */}
+        <Route path="/suppliers/stock-transactions" element={<SuppliersStockTransactionDashboard />} />
         <Route path="/suppliers/new" element={<SupplierForm />} />
         <Route path="/suppliers/supply" element={<SupplyDashboard />} />
         <Route path="/suppliers/supply/orders" element={<SupplyOrderList />} />
 
         {/* Supply */}
-        <Route path="/supply" element={<SupplierOrderDashboard />} />
+        <Route path="/supply" element={<SupplierOrderRequestsDashboard />} />
         <Route path="/supply/supply" element={<SupplyDashboard />} />
         <Route path="/supply/supply/orders" element={<SupplyOrderList />} />
 

@@ -4,55 +4,78 @@ import { Link } from 'react-router-dom';
 
 import SupplierManagerNavbar from '../../../components/SupplyManagement/Navbar';
 
-function SuppliersOrderDashboard() {
+function SupplierOrderRequestsDashboard() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stats, setStats] = useState({
-    totalOrders: 0,
-    totalAmount: 0,
-    pendingOrders: 0
+    totalRequests: 0
   });
 
   const fetchOrders = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/orders');
-      console.log('API Response:', response.data);
-      setOrders(response.data.orders || []);
-      calculateStats(response.data.orders || []);
+      const response = await axios.get('http://localhost:8000/api/orders/');
+      setOrders(response.data.orders);
+      calculateStats(response.data.orders);
       setLoading(false);
     } catch (err) {
-      console.error('Error details:', err.response || err);
-      setError('Error fetching orders: ' + (err.response?.data?.message || err.message));
+      setError('Error fetching orders');
       setLoading(false);
     }
   }, []);
 
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
+
   const calculateStats = (orderData) => {
     const stats = {
       totalOrders: orderData.length,
-      totalAmount: orderData.reduce((sum, order) => sum + (order.quantity * order.unitPrice), 0),
-      pendingOrders: orderData.filter(order => order.status === 'Pending').length
+      activeOrders: orderData.filter(s => s.status === 'Processing').length,
+      totalAmount: orderData.reduce((sum, s) => sum + (s.totalAmmount || 0), 0)
     };
     setStats(stats);
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this order?')) {
+  const handleDecline = async (id) => {
+    if (window.confirm('Are you sure you want to decline this order?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/orders/${id}`);
+        await axios.put(`http://localhost:8000/api/orders/${id}`, { status: 'Declined' });
+        alert('Order declined successfully');
         fetchOrders();
-        alert('Order deleted successfully');
       } catch (error) {
-        console.error('Error deleting order:', error);
-        alert('Error deleting order: ' + error.message);
+        console.error('Error declining order:', error);
+        alert('Error declining order: ' + error.message);
       }
     }
   };
 
-  useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
+  const handleAccept = async (id) => {
+    if (window.confirm('Are you sure you want to accept this order?')) {
+      try {
+        await axios.put(`http://localhost:8000/api/orders/${id}`, { status: 'Accepted' });
+        alert('Order accepted successfully');
+        fetchOrders();
+      } catch (error) {
+        console.error('Error accepting order:', error);
+        alert('Error accepting order: ' + error.message);
+      }
+    }
+  };
+
+  const handleStatusUpdate = async (id) => {
+    const newStatus = prompt('Enter new status for this order:');
+    if (newStatus) {
+      try {
+        await axios.put(`http://localhost:8000/api/orders/${id}`, { status: newStatus });
+        alert('Order status updated successfully');
+        fetchOrders();
+      } catch (error) {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status: ' + error.message);
+      }
+    }
+  };
 
   if (loading) return <div className="text-center p-4">Loading...</div>;
   if (error) return <div className="text-red-500 text-center p-4">{error}</div>;
@@ -72,57 +95,55 @@ function SuppliersOrderDashboard() {
             >
               <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg>
             </Link>
-            <h1 className="text-2xl font-bold text-white">Orders Management</h1>
-            <span className="bg-gray-500 text-white px-2 py-1 rounded-full text-xs font-medium">Total Orders: {stats.totalOrders}</span>
+            <h1 className="text-2xl font-bold text-white">Order Requests Management</h1>
+            <span className="bg-gray-500 text-white px-2 py-1 rounded-full text-xs font-medium">Total Requests: {stats.activeOrders}</span>
           </div>
-          <Link
-            to="/suppliers/orders/new"
-            className="flex flex-row items-center gap-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          <button
+            onClick={fetchOrders}
+            className="flex flex-row items-center gap-2 bg-white text-green-600 font-semibold px-4 py-2 rounded hover:bg-gray-200"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-package-export"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 21l-8 -4.5v-9l8 -4.5l8 4.5v4.5" /><path d="M12 12l8 -4.5" /><path d="M12 12v9" /><path d="M12 12l-8 -4.5" /><path d="M15 18h7" /><path d="M19 15l3 3l-3 3" /></svg>
-            New Order
-          </Link>
+            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-refresh"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+            Refresh
+          </button>
         </div>
 
         <div className="h-[90%] bg-white rounded-lg shadow overflow-auto">
           <table className="min-w-full">
             <thead className="bg-gray-50 sticky top-0">
               <tr>
-                <th className="min-w-[250px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Supplier</th>
-                <th className="min-w-[250px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Item</th>
-                <th className="min-w-[350px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Order Details</th>
-                <th className="min-w-[100px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Quantity</th>
-                <th className="min-w-[200px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Unit Price<br />(Rs)</th>
-                <th className="min-w-[200px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Total Price<br />(Rs)</th>
-                <th className="min-w-[150px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Status</th>
-                <th className="min-w-[150px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">ID</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Order Details</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Item ID</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Quantity</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Unit Price (Rs.)</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Total Price (Rs.)</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {orders.map((order) => (
                 <tr key={order._id}>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">{order.supplier}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">{order.itemName}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">{order.orderDetails}</div>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="font-medium text-gray-900">{order._id}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 text-center">{order.quantity}</div>
+                    <div className="font-medium text-gray-900">{order.orderDetails}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 text-center">{(order.unitPrice)}</div>
+                    <div className="font-medium text-gray-900">{order.itemID}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 text-center">
-                      {(order.quantity * order.unitPrice).toFixed(2)}
-                    </div>
+                    <div className="font-medium text-gray-900">{order.quantity}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className='w-full flex items-center justify-center'>
+                    <div className="font-medium text-gray-900">{order.unitPrice}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="font-medium text-gray-900">{(order.unitPrice * order.quantity).toFixed(2)}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                  <span className='w-full flex items-center justify-center'>
                       {order.status === 'Processing' ? (
                         <span className="flex flex-row items-center gap-1 text-xs font-semibold px-3 py-1.5 border border-blue-800 bg-blue-200 text-blue-800 rounded-full">
                           <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-loader"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 6l0 -3" /><path d="M16.25 7.75l2.15 -2.15" /><path d="M18 12l3 0" /><path d="M16.25 16.25l2.15 2.15" /><path d="M12 18l0 3" /><path d="M7.75 16.25l-2.15 2.15" /><path d="M6 12l-3 0" /><path d="M7.75 7.75l-2.15 -2.15" /></svg>
@@ -158,19 +179,34 @@ function SuppliersOrderDashboard() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <span className="flex flex-row items-center gap-1">
-                      <Link to={`/orders/edit/${order._id}`} className="flex flex-row items-center gap-1 text-indigo-600 hover:text-indigo-900 mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(order._id)}
-                        className="flex flex-row items-center gap-1 text-red-600 hover:text-red-900"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
-                        Delete
-                      </button>
-                    </span>
+                    {order.status === 'Processing' ? (
+                      <span className="flex flex-row items-center gap-1">
+                        <button
+                          onClick={() => handleDecline(order._id)}
+                          className="flex flex-row items-center gap-1 text-red-600 mr-4 px-2 py-1 rounded-md border border-red-600 hover:bg-red-600 hover:text-white"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                          Decline
+                        </button>
+                        <button
+                          onClick={() => handleAccept(order._id)}
+                          className="flex flex-row items-center gap-1 text-green-600 px-2 py-1 rounded-md border border-green-600 hover:bg-green-600 hover:text-white"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l5 5l10 -10" /></svg>
+                          Accept
+                        </button>
+                      </span>
+                    ) : (
+                      <span className="flex flex-row items-center gap-1">
+                        <button
+                          onClick={() => handleStatusUpdate(order._id)}
+                          className="flex flex-row items-center gap-1 text-blue-600 px-2 py-1 rounded-md border border-blue-600 hover:bg-blue-600 hover:text-white"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
+                          Edit Status
+                        </button>
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -182,4 +218,4 @@ function SuppliersOrderDashboard() {
   );
 };
 
-export default SuppliersOrderDashboard;
+export default SupplierOrderRequestsDashboard;
