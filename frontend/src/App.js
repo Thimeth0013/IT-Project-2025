@@ -11,6 +11,7 @@ import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp compo
 
 // System Website
 import Admin  from './pages/SystemWebsite/Admin';
+import AddUserForm from './components/systemWebsite/systemLayout/AddUserForm';
 
 import PettyCashHome from  './pages/PettyCashHome';
 import PettyCashDashboard from './pages/PettyCashDashboard';
@@ -20,7 +21,7 @@ import ItemDashboard from './pages/SupplyManagement/Manager/SupplierDashboard';
 import SuppliersHomepage from './pages/SupplyManagement/Manager/SuppliersHomepage';
 import OrderDashboard from './pages/SupplyManagement/Manager/SuppliersOrderDashboard';
 import OrderForm from './pages/SupplyManagement/Manager/OrderForm';
-import StockTransactionDashboard from './pages/SupplyManagement/Manager/StockTransactionDashboard';
+//import StockTransactionDashboard from './pages/SupplyManagement/Manager/StockTransactionDashboard';
 import SuppliersAll from './pages/SupplyManagement/Manager/SuppliersAll';
 import SupplierForm from './pages/SupplyManagement/Manager/SupplierForm';
 import SupplyDashboard from './pages/SupplyManagement/Manager/SupplyDashboard';
@@ -52,7 +53,7 @@ function App() {
         <Route path="/suppliers/items" element={<ItemDashboard />} />
         <Route path="/suppliers/orders" element={<OrderDashboard />} />
         <Route path="/suppliers/orders/new" element={<OrderForm />} />
-        <Route path="/suppliers/stock-transactions" element={<StockTransactionDashboard />} />
+        {/*<Route path="/suppliers/stock-transactions" element={<StockTransactionDashboard />} /> */}
         <Route path="/suppliers/new" element={<SupplierForm />} />
         <Route path="/suppliers/supply" element={<SupplyDashboard />} />
         <Route path="/suppliers/supply/orders" element={<SupplyOrderList />} />
@@ -66,12 +67,13 @@ function App() {
         <Route path='/Admin' element={<Admin/>}/>
         <Route path="/AddUserForm" element={<AddUserForm/>} />
       
-      
-     <Route path="/pettycash" element={<PettyCashHome />} />
-     <Route path="/pettycash/new" element={<PettyCashDashboard />} />
-      {/* </PettyCash> */}
+        {/* </PettyCash> */}
+        <Route path="/pettycash" element={<PettyCashHome />} />
+        <Route path="/pettycash/new" element={<PettyCashDashboard />} />
       </Routes>
     
     </Router>
 )}
+
+export default App;
 
