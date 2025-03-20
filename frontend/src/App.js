@@ -11,6 +11,7 @@ import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp compo
 
 // System Website
 import Admin  from './pages/SystemWebsite/Admin';
+import CustomerM from './pages/SystemWebsite/CustomerM';
 import AddUserForm from './components/systemWebsite/systemLayout/AddUserForm';
 
 import PettyCashHome from  './pages/PettyCashHome';
@@ -33,8 +34,8 @@ import SupplierOrderDashboard from './pages/SupplyManagement/Supplier/SupplierOr
 // import SupplyOrderList from './components/Supply/SupplyOrderList';
 
 //import Inventory
-import Addstock from './components/addstock';
-import InventoryDashboard from './components/inventoryDash';
+//import Addstock from './components/addstock';
+//import InventoryDashboard from './components/inventoryDash';
 
 function App() {
   return (
@@ -47,7 +48,6 @@ function App() {
         <Route path='/About' element={<About/>}/>
         <Route path="/LoginC" element={<LoginC />} /> {/* Login route */}
         <Route path="/SignUpC" element={<SignUpC />} /> {/* SignUp route */}
-
 
         {/* System Website*/}
 
@@ -70,18 +70,18 @@ function App() {
         {/* Admin */}
         <Route path='/Admin' element={<Admin/>}/>
         <Route path="/AddUserForm" element={<AddUserForm/>} />
-      
-      
-     <Route path="/pettycash" element={<PettyCashHome />} />
-     <Route path="/pettycash/new" element={<PettyCashDashboard />} />
-      {/* </PettyCash> */}
 
-      {/* </Inventory> */}
-      <Route path="/" element={<Navigate to="/inventory" />} />
-      <Route path="/inventory" element={<InventoryDashboard />} />
-      <Route path="/add-stock" element={<Addstock />} />
+        <Route path="/CustomerM" element={<CustomerM/>}/>
+      
+        <Route path="/pettycash" element={<PettyCashHome />} />
+        <Route path="/pettycash/new" element={<PettyCashDashboard />} />
+        {/* </PettyCash> */}
+
+        {/* </Inventory> */}
+        {/*<Route path="/" element={<Navigate to="/inventory" />} />
+        <Route path="/inventory" element={<InventoryDashboard />} />
+        <Route path="/add-stock" element={<Addstock />} />*/}
       </Routes>
-    
     </Router>
 )}
 
