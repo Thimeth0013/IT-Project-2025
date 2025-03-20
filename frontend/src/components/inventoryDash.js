@@ -89,7 +89,6 @@ const InventoryDashboard = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Brand</th>
                 <th>Category</th>
                 <th>Quantity</th>
                 <th>Price Per Unit</th>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Customer Website
 import CustomerHome from './pages/CustomerWebsite/cHome'
@@ -77,7 +77,6 @@ function App() {
       {/* </PettyCash> */}
 
       {/* </Inventory> */}
-      <Route path="/" element={<Navigate to="/inventory" />} />
       <Route path="/inventory" element={<InventoryDashboard />} />
       <Route path="/add-stock" element={<Addstock />} />
       </Routes>
