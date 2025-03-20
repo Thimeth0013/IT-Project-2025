@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // Customer Website
 import CustomerHome from './pages/CustomerWebsite/cHome'
@@ -31,6 +31,10 @@ import SupplyOrderList from './pages/SupplyManagement/Manager/SupplyOrderList';
 import SupplierOrderDashboard from './pages/SupplyManagement/Supplier/SupplierOrderDashboard';
 // import SupplyDashboard from './components/Supply/SupplyDashboard';
 // import SupplyOrderList from './components/Supply/SupplyOrderList';
+
+//import Inventory
+import Addstock from './components/addstock';
+import InventoryDashboard from './components/inventoryDash';
 
 function App() {
   return (
@@ -67,9 +71,15 @@ function App() {
         <Route path='/Admin' element={<Admin/>}/>
         <Route path="/AddUserForm" element={<AddUserForm/>} />
       
-        {/* </PettyCash> */}
-        <Route path="/pettycash" element={<PettyCashHome />} />
-        <Route path="/pettycash/new" element={<PettyCashDashboard />} />
+      
+     <Route path="/pettycash" element={<PettyCashHome />} />
+     <Route path="/pettycash/new" element={<PettyCashDashboard />} />
+      {/* </PettyCash> */}
+
+      {/* </Inventory> */}
+      <Route path="/" element={<Navigate to="/inventory" />} />
+      <Route path="/inventory" element={<InventoryDashboard />} />
+      <Route path="/add-stock" element={<Addstock />} />
       </Routes>
     
     </Router>
