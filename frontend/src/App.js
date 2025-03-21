@@ -2,26 +2,19 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import { Navigate } from 'react-router-dom';
 
-import HomePage from './pages/Home';
-// import CustomerLayout from './components/customerWebsite/CustomerLayout';
-// import CustomerHome from './pages/cHome'
-// import BookingForm from './components/customerWebsite/BookingForm';
-// import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
-// import ViewList from './components/BookingList'
-// import CompanyOverview from './pages/AboutC'
-
 // Customer Website
-// import CustomerHome from './pages/CustomerWebsite/cHome'
-// import BookingForm from './components/customerWebsite/BookingForm';
-// import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
-// import About from './pages/CustomerWebsite/AboutC'
-// import LoginC from './components/customerWebsite/LoginC';  // Your Login component
-// import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp component
+import CustomerHome from './pages/CustomerWebsite/cHome'
+import BookingForm from './components/customerWebsite/BookingForm';
+import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
+import About from './pages/CustomerWebsite/AboutC'
+import LoginC from './components/customerWebsite/LoginC';  // Your Login component
+import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp component
 
 // System Website
 import Admin  from './pages/SystemWebsite/Admin';
 import CustomerM from './pages/SystemWebsite/CustomerM';
 import AddUserForm from './components/systemWebsite/systemLayout/AddUserForm';
+import BookingList from './components/systemWebsite/BookingList';
 
 //pettycash
 import PettyCashHome from  './pages/PettyCashHome';
@@ -54,18 +47,19 @@ function App() {
     <Router>
       {/* <CustomerLayout> */}
       <Routes>
-        <Route path='/' element={<HomePage/>} />
-        {/* <Route path="/SlotSelectBooking" element={<SlotSelection />} /> */}
-        {/* <Route path='/BookingForm' element={<BookingForm/>}/> */}
-        {/* <Route path='/About' element={<CompanyOverview/>}/> */}
+        <Route path="/SlotSelectBooking" element={<SlotSelection />} />
+        <Route path='/BookingForm' element={<BookingForm/>}/>
+        <Route path='/About' element={<About/>}/>
+        
         {/* Customer Website*/}
-      {/*
+
         <Route path='/' element={<CustomerHome/>} />
         <Route path="/SlotSelectBooking" element={<SlotSelection />} />
         <Route path='/BookingForm' element={<BookingForm/>}/>
         <Route path='/About' element={<About/>}/>
         <Route path="/LoginC" element={<LoginC />} /> {/* Login route */}
         <Route path="/SignUpC" element={<SignUpC />} /> {/* SignUp route */}
+        <Route path='/BookingList' element={<BookingList/>}/>
 
         {/* System Website*/}
 
@@ -85,14 +79,14 @@ function App() {
         <Route path="/supply/supply" element={<SupplyDashboard />} />
         <Route path="/supply/supply/orders" element={<SupplyOrderList />} />
 
-        {/* Admin
+        {/* Admin */}
         <Route path='/Admin' element={<Admin/>}/>
         <Route path="/AddUserForm" element={<AddUserForm/>} />
 
         <Route path="/CustomerM" element={<CustomerM/>}/>
       
-     <Route path="/pettycash" element={<PettyCashHome />} />
-     <Route path="/pettycash/new" element={<PettyCashDashboard />} />
+        <Route path="/pettycash" element={<PettyCashHome />} />
+        <Route path="/pettycash/new" element={<PettyCashDashboard />} />
      
         {/* Add Finance Management Routes */}
        {/* Add finance routes */}
