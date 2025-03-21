@@ -94,10 +94,9 @@ function App() {
         <Route path="/payment" element={<PaymentGateway    />} />
       {/* </PettyCash>  and payment*/}
 
-        {/* </Inventory> */}
-        {/*<Route path="/" element={<Navigate to="/inventory" />} />
-        <Route path="/inventory" element={<InventoryDashboard />} />
-        <Route path="/add-stock" element={<Addstock />} />*/}
+      {/* </Inventory> */}
+      <Route path="/inventory" element={<InventoryDashboard />} />
+      <Route path="/add-stock" element={<Addstock />} />
       </Routes>
     
     </Router>

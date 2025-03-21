@@ -73,6 +73,7 @@ app.use('/api/auth', authRoutes);
 //app.use('api/service', serviceRoutes);
 
 //app.use('/api', paymentRoutes);	
+app.use("/inventory", inventoryR);
 
 // Start server
 app.listen(PORT, () => {
