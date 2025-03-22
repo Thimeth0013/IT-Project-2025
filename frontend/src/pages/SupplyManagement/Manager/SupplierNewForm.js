@@ -14,6 +14,7 @@ const SupplierForm = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [validationErrors, setValidationErrors] = useState({});
 
     const handleChange = (e) => {
         setFormData({
@@ -22,8 +23,60 @@ const SupplierForm = () => {
         });
     };
 
+    const validateForm = () => {
+        const errors = {};
+        // Name Validation: Ensure it contains only letters and is not empty
+        if (!formData.name.trim()) {
+            errors.name = "Name is required.";
+        } else if (!/^[a-zA-Z\s]*$/.test(formData.name)) {
+            errors.name = "Name should only contain letters.";
+        }
+
+        // Phone Validation: Must be 10 digits and contain only numbers
+        if (!formData.phone.trim()) {
+            errors.phone = "Phone number is required.";
+        } else if (!/^\d{10}$/.test(formData.phone)) {
+            errors.phone = "Phone number must be exactly 10 digits.";
+        }
+
+        // Email Validation: Must be a valid email format
+        if (!formData.email.trim()) {
+            errors.email = "Email is required.";
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            errors.email = "Email format is invalid.";
+        }
+
+        // Password Validation: Must be at least 6 characters and contain letters and numbers
+        if (!formData.password.trim()) {
+            errors.password = "Password is required.";
+        } else if (formData.password.length < 6) {
+            errors.password = "Password must be at least 6 characters long.";
+        } else if (!/[a-zA-Z]/.test(formData.password) || !/\d/.test(formData.password)) {
+            errors.password = "Password must contain both letters and numbers.";
+        }
+
+        // Address Validation: Ensure it is not empty
+        if (!formData.address.trim()) {
+            errors.address = "Address is required.";
+        }
+
+        // Category Validation: Ensure it is selected
+        if (!formData.category) {
+            errors.category = "Category is required.";
+        }
+
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate form
+        if (!validateForm()) {
+            return;
+        }
+
         setLoading(true);
         setError(null);
 
@@ -64,6 +117,9 @@ const SupplierForm = () => {
                         required
                         className="w-full p-2 border rounded-md"
                     />
+                    {validationErrors.name && (
+                        <p className="text-red-500 text-sm">{validationErrors.name}</p>
+                    )}
                 </div>
 
                 <div>
@@ -87,6 +143,9 @@ const SupplierForm = () => {
                         <option value="Electrical">Electrical</option>
                         <option value="Other">Other</option>
                     </select>
+                    {validationErrors.category && (
+                        <p className="text-red-500 text-sm">{validationErrors.category}</p>
+                    )}
                 </div>
 
                 <div>
@@ -102,6 +161,9 @@ const SupplierForm = () => {
                         required
                         className="w-full p-2 border rounded-md"
                     />
+                    {validationErrors.phone && (
+                        <p className="text-red-500 text-sm">{validationErrors.phone}</p>
+                    )}
                 </div>
 
                 <div>
@@ -116,6 +178,9 @@ const SupplierForm = () => {
                         required
                         className="w-full p-2 border rounded-md"
                     />
+                    {validationErrors.email && (
+                        <p className="text-red-500 text-sm">{validationErrors.email}</p>
+                    )}
                 </div>
 
                 <div>
@@ -129,6 +194,9 @@ const SupplierForm = () => {
                         required
                         className="w-full p-2 border rounded-md"
                     />
+                    {validationErrors.address && (
+                        <p className="text-red-500 text-sm">{validationErrors.address}</p>
+                    )}
                 </div>
 
                 <div>
@@ -143,6 +211,9 @@ const SupplierForm = () => {
                         required
                         className="w-full p-2 border rounded-md"
                     />
+                    {validationErrors.password && (
+                        <p className="text-red-500 text-sm">{validationErrors.password}</p>
+                    )}
                 </div>
 
                 <div
