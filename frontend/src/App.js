@@ -20,7 +20,7 @@ import BookingList from './components/systemWebsite/BookingList';
 import PettyCashHome from  './pages/PettyCashHome';
 import PettyCashDashboard from './pages/PettyCashDashboard';
 // Import  payment   component
-// import PaymentGateway from './components/PaymentGateway/payment';
+ import PaymentGateway from './components/PaymentGateway/payment';
 
 // import Supplier
 import ItemDashboard from './pages/SupplyManagement/Manager/SuppliersItemDashboard';
@@ -90,7 +90,7 @@ function App() {
         {/* Add Finance Management Routes */}
         {/* Add finance routes */}
 
-        {/* <Route path="/payment" element={<PaymentGateway    />} /> */}
+         <Route path="/payment" element={<PaymentGateway    />} /> 
       {/* </PettyCash>  and payment*/}
 
       {/* </Inventory> */}
