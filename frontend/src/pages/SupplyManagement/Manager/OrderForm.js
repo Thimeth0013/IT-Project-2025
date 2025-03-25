@@ -79,8 +79,9 @@ const OrderForm = () => {
       const selectedSupplier = suppliers.find(s => s._id === formData.supplierID);
 
       if (selectedSupplier) {
-        const supplierCategory = selectedSupplier.category.trim();
-        const items = PREDEFINED_ITEMS[supplierCategory] || [];
+        const supplierCategory = selectedSupplier.category?.trim();
+        const items = supplierCategory ? PREDEFINED_ITEMS[supplierCategory] || [] : [];
+
 
         console.log('Supplier Category:', supplierCategory);
         console.log('Available Items:', items);
