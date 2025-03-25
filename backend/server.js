@@ -44,6 +44,7 @@ const pettycashRoutes = require('./routes/pettycash');
 // const authRoutes = require('./routes/authRoutes');
 const inventoryR = require('./routes/inventoryR');
 //const serviceRoutes = require('./routes/serviceRoutes');
+const paymentRoutes = require('./routes/payment');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -72,7 +73,7 @@ app.use('/api/pettycash', pettycashRoutes);
 // app.use('/api/auth', authRoutes);
 //app.use('api/service', serviceRoutes);
 
-//app.use('/api', paymentRoutes);	
+app.use('/api', paymentRoutes);	
 app.use("/inventory", inventoryR);
 
 // Start server
