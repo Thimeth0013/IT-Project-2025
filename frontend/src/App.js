@@ -29,7 +29,7 @@ import OrderDashboard from './pages/SupplyManagement/Manager/SuppliersOrderDashb
 import OrderForm from './pages/SupplyManagement/Manager/OrderForm';
 import SuppliersStockTransactionDashboard from './pages/SupplyManagement/Manager/SuppliersStockTransactionDashboard';
 import SuppliersAll from './pages/SupplyManagement/Manager/SuppliersAll';
-import SupplierForm from './pages/SupplyManagement/Manager/SupplierNewForm';
+import SupplierNewForm from './pages/SupplyManagement/Manager/SupplierNewForm';
 import SupplyDashboard from './pages/SupplyManagement/Manager/SupplyDashboard';
 import SupplyOrderList from './pages/SupplyManagement/Manager/SupplyOrderList';
 
@@ -70,7 +70,7 @@ function App() {
         <Route path="/suppliers/orders" element={<OrderDashboard />} />
         <Route path="/suppliers/orders/new" element={<OrderForm />} />
         <Route path="/suppliers/stock-transactions" element={<SuppliersStockTransactionDashboard />} />
-        <Route path="/suppliers/new" element={<SupplierForm />} />
+        <Route path="/suppliers/new" element={<SupplierNewForm />} />
         <Route path="/suppliers/supply" element={<SupplyDashboard />} />
         <Route path="/suppliers/supply/orders" element={<SupplyOrderList />} />
 

@@ -134,7 +134,7 @@ const SupplierForm = () => {
                         required
                     >
                         <option value="" selected disabled>Select Category</option>
-                        <option value="cleaning">Cleaning</option>
+                        <option value="Cleaning">Cleaning</option>
                         <option value="Polishing">Polishing</option>
                         <option value="Oils">Oils</option>
                         <option value="Fluids">Fluids</option>
