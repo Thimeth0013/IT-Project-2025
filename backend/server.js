@@ -40,7 +40,12 @@ const stockTransactionRoutes = require('./routes/stock_transactions');
 const supplierRoutes = require('./routes/suppliers');
 const bookingRoutes = require('./routes/bookingRoutes')
 const pettycashRoutes = require('./routes/pettycash');
+<<<<<<< HEAD
 const authRoutes = require('./routes/authRoutes');
+=======
+// const registercRoutes = require('./routes/registercRoutes')
+// const authRoutes = require('./routes/authRoutes');
+>>>>>>> 39e123e9e1bd334e9707ad3fb72cb8d133b72347
 const inventoryR = require('./routes/inventoryR');
 //const serviceRoutes = require('./routes/serviceRoutes');
 
@@ -66,8 +71,12 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/stock_transactions', stockTransactionRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/booking', bookingRoutes);
+<<<<<<< HEAD
+=======
+// app.use('/api/register', registercRoutes);
+>>>>>>> 39e123e9e1bd334e9707ad3fb72cb8d133b72347
 app.use('/api/pettycash', pettycashRoutes);
-app.use('/api/auth', authRoutes);
+// app.use('/api/auth', authRoutes);
 //app.use('api/service', serviceRoutes);
 
 //app.use('/api', paymentRoutes);	

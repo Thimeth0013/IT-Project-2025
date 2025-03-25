@@ -3,24 +3,24 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import { Navigate } from 'react-router-dom';
 
 // Customer Website
-import CustomerHome from './pages/CustomerWebsite/cHome'
-import BookingForm from './components/customerWebsite/BookingForm';
-import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
-import About from './pages/CustomerWebsite/AboutC'
-import LoginC from './components/customerWebsite/LoginC';  // Your Login component
-import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp component
+// import CustomerHome from './pages/CustomerWebsite/cHome'
+// import BookingForm from './components/customerWebsite/BookingForm';
+// import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
+// // import About from './pages/CustomerWebsite/AboutC'
+// import LoginC from './components/customerWebsite/LoginC';  // Your Login component
+// import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp component
 
 // System Website
-import Admin  from './pages/SystemWebsite/Admin';
-import CustomerM from './pages/SystemWebsite/CustomerM';
-import AddUserForm from './components/systemWebsite/systemLayout/AddUserForm';
-import BookingList from './components/systemWebsite/BookingList';
+// import Admin  from './pages/SystemWebsite/Admin';
+// import CustomerM from './pages/SystemWebsite/CustomerM';
+// import AddUserForm from './components/systemWebsite/systemLayout/AddUserForm';
+// import BookingList from './components/systemWebsite/BookingList';
 
 //pettycash
 import PettyCashHome from  './pages/PettyCashHome';
 import PettyCashDashboard from './pages/PettyCashDashboard';
 // Import  payment   component
-import PaymentGateway from './components/PaymentGateway/payment';
+// import PaymentGateway from './components/PaymentGateway/payment';
 
 // import Supplier
 import ItemDashboard from './pages/SupplyManagement/Manager/SuppliersItemDashboard';
@@ -47,15 +47,19 @@ function App() {
     <Router>
       {/* <CustomerLayout> */}
       <Routes>
+        {/* <Route path="/SlotSelectBooking" element={<SlotSelection />} />
+        <Route path='/BookingForm' element={<BookingForm/>}/>
+        <Route path='/About' element={<About/>}/> */}
+        
         {/* Customer Website*/}
 
-        <Route path='/' element={<CustomerHome/>} />
+        {/* <Route path='/' element={<CustomerHome/>} />
         <Route path="/SlotSelectBooking" element={<SlotSelection />} />
         <Route path='/BookingForm' element={<BookingForm/>}/>
         <Route path='/About' element={<About/>}/>
-        <Route path="/LoginC" element={<LoginC />} /> {/* Login route */}
-        <Route path="/SignUpC" element={<SignUpC />} /> {/* SignUp route */}
-        <Route path='/BookingList' element={<BookingList/>}/>
+        <Route path="/LoginC" element={<LoginC />} /> 
+        <Route path="/SignUpC" element={<SignUpC />} /> 
+        <Route path='/BookingList' element={<BookingList/>}/> */}
 
         {/* System Website*/}
 
@@ -76,10 +80,10 @@ function App() {
         <Route path="/supply/supply/orders" element={<SupplyOrderList />} />
 
         {/* Admin */}
-        <Route path='/Admin' element={<Admin/>}/>
-        <Route path="/AddUserForm" element={<AddUserForm/>} />
+        {/* <Route path='/Admin' element={<Admin/>}/>
+        <Route path="/AddUserForm" element={<AddUserForm/>} /> */}
 
-        <Route path="/CustomerM" element={<CustomerM/>}/>
+        {/* <Route path="/CustomerM" element={<CustomerM/>}/> */}
       
         <Route path="/pettycash" element={<PettyCashHome />} />
         <Route path="/pettycash/new" element={<PettyCashDashboard />} />
@@ -87,12 +91,12 @@ function App() {
         {/* Add Finance Management Routes */}
        {/* Add finance routes */}
 
-        <Route path="/payment" element={<PaymentGateway    />} />
+        {/* <Route path="/payment" element={<PaymentGateway    />} /> */}
       {/* </PettyCash>  and payment*/}
 
       {/* </Inventory> */}
-      {/* <Route path="/inventory" element={<InventoryDashboard />} />
-      <Route path="/add-stock" element={<Addstock />} /> */}
+      {/* <Route path="/inventory" element={<InventoryDashboard />} /> */}
+      {/* <Route path="/add-stock" element={<Addstock />} /> */}
       </Routes>
     
     </Router>
