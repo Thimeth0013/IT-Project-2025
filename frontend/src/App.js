@@ -47,10 +47,6 @@ function App() {
     <Router>
       {/* <CustomerLayout> */}
       <Routes>
-        <Route path="/SlotSelectBooking" element={<SlotSelection />} />
-        <Route path='/BookingForm' element={<BookingForm/>}/>
-        <Route path='/About' element={<About/>}/>
-        
         {/* Customer Website*/}
 
         <Route path='/' element={<CustomerHome/>} />
@@ -95,8 +91,8 @@ function App() {
       {/* </PettyCash>  and payment*/}
 
       {/* </Inventory> */}
-      <Route path="/inventory" element={<InventoryDashboard />} />
-      <Route path="/add-stock" element={<Addstock />} />
+      {/* <Route path="/inventory" element={<InventoryDashboard />} />
+      <Route path="/add-stock" element={<Addstock />} /> */}
       </Routes>
     
     </Router>
