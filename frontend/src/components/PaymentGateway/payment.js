@@ -22,11 +22,13 @@ const validateCustomerDetails = () => {
   
   if (!customerName.trim()) {
     newErrors.customerName = 'Please enter your name';
+  } else if (!/^[A-Za-z\s]+$/.test(customerName)) {
+    newErrors.customerName = 'Name should contain only letters';
   }
   
   if (!customerEmail.trim()) {
     newErrors.customerEmail = 'Please enter your email';
-  } else if (!/^\S+@\S+\.\S+$/.test(customerEmail)) {
+  } else if (!/^\S+@\S+\.com$/.test(customerEmail)) {
     newErrors.customerEmail = 'Please enter a valid email address';
   }
   
