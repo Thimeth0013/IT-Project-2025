@@ -1,15 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SupplierManagerNavbar from "../../../components/SupplyManagement/Navbar";
+// import SupplierManagerNavbar from "../../../components/SupplyManagement/Navbar";
 
 function SuppliersHomepage() {
     return (
         <>
-            <SupplierManagerNavbar />
+            {/* <SupplierManagerNavbar /> */}
 
-            <div className="bg-gray-100 flex items-center justify-center"
-                style={{ minHeight: "calc(100vh - 72px)" }}
-            >
+            <div className="h-screen bg-gray-100 flex items-center justify-center">
                 <div className="container mx-auto px-4">
                     <div className="flex justify-center items-center gap-4 mb-12">
                         <h1 className="text-4xl font-bold">

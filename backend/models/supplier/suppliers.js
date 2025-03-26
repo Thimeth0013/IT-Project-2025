@@ -23,6 +23,11 @@ const supplierSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        required: true,
+        enum: ['Cleaning', 'Polishing', 'Oils', 'Fluids', 'Filters', 'Tire', 'Electrical', 'Other']
+    },
     role: {
         type: String,
         enum: ['Admin', 'Customer', 'Customer Manager', 'Supplier', 'Supplier Manager', 'Employee Manager', 'Finance Manager'], // List of allowed roles
