@@ -12,7 +12,14 @@ const OrderSchema = new mongoose.Schema({
         type: String,
         enum: ['Processing', 'Accepted', 'Delivering', 'Delivered', 'Declined', 'Rejected', 'Approved', 'Undefined'],
         default: 'Processing'
-    }
+    },
+    remarks: String,
+    transactionId: String,
+    paymentStatus: {
+        type: String,
+        enum: ['Pending', 'Completed', 'Failed'],
+        default: 'Pending'
+    },
 });
 
 const OrderModel = mongoose.model('orders', OrderSchema);

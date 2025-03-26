@@ -16,11 +16,14 @@ function SuppliersStockTransactionDashboard() {
 
   const fetchTransactions = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/stock_transactions');
+      const response = await axios.get('http://localhost:8000/api/orders');
       console.log('API Response:', response.data);
-      const transactionData = response.data.stockTransactions || [];
-      setTransactions(transactionData);
-      calculateStats(transactionData);
+
+      // Filter orders with "Approved" status
+      const approvedOrders = response.data.orders.filter(order => order.status === "Approved") || [];
+
+      setTransactions(approvedOrders);
+      calculateStats(approvedOrders);
       setLoading(false);
     } catch (err) {
       console.error('Error details:', err.response || err);
@@ -42,11 +45,6 @@ function SuppliersStockTransactionDashboard() {
     setStats(stats);
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return '';
-    return new Date(dateString).toLocaleDateString();
-  };
-
   if (loading) return <div className="text-center p-4">Loading...</div>;
   if (error) return <div className="text-red-500 text-center p-4">{error}</div>;
 
@@ -66,13 +64,6 @@ function SuppliersStockTransactionDashboard() {
             <h1 className="text-2xl font-bold text-white">Stock Transactions Management</h1>
             <span className="bg-gray-500 text-white px-2 py-1 rounded-full text-xs font-medium">Total Transactions: {stats.totalTransactions}</span>
           </div>
-          <Link
-            to="/suppliers/stock-transactions/new"
-            className="flex flex-row items-center gap-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-cash-banknote-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M12.25 18h-7.25a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v4.5" /><path d="M18 12h.01" /><path d="M6 12h.01" /><path d="M16 19h6" /><path d="M19 16v6" /></svg>
-            New Transaction
-          </Link>
         </div>
 
         <div className="h-[90%] bg-white rounded-lg shadow overflow-auto">
@@ -80,28 +71,50 @@ function SuppliersStockTransactionDashboard() {
             <thead className="bg-gray-50 sticky top-0">
               <tr>
                 <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Item ID</th>
-                <th className="min-w-[150px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Date</th>
-                <th className="min-w-[150px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Quantity</th>
-                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Remarks</th>
+                <th className="min-w-[150px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Item Name</th>
+                <th className="min-w-[150px] px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Supplier</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Quantity</th>
+                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-500 bg-gray-200 uppercase tracking-wider">Payment Status</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {transactions.map((transaction) => (
-                <tr key={transaction._id}>
+              {transactions.map((order) => (
+                <tr key={order._id}>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-medium text-gray-900 text-center">{transaction.itemID}</div>
+                    <div className="font-medium text-gray-900 text-center">{order.itemID}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 text-center">{formatDate(transaction.date)}</div>
+                    <div className="text-sm text-gray-900 text-center">{order.itemName}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className={`text-sm font-medium text-center ${transaction.quantity > 0 ? 'text-green-600' : 'text-red-600'
-                      }`}>
-                      {transaction.quantity > 0 ? '+' : ''}{transaction.quantity}
+                    <div className="text-sm text-gray-900 text-center">
+                      {order.supplier}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{transaction.remarks}</div>
+                    <div className="text-sm font-medium text-center text-gray-900">
+                      {order.quantity}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className='w-full flex items-center justify-center'>
+                      {order.paymentStatus === "Failed" ? (
+                        <span className="flex flex-row items-center gap-1 text-xs font-semibold px-3 py-1.5 border border-red-800 bg-red-200 text-red-800 rounded-full">
+                          <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                          Failed
+                        </span>
+                      ) : order.paymentStatus === "Completed" ? (
+                        <span className="flex flex-row items-center gap-1 text-xs font-semibold px-3 py-1.5 border border-green-900 bg-green-300 text-green-900 rounded-full">
+                          <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-checks"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 12l5 5l10 -10" /><path d="M2 12l5 5m5 -5l5 -5" /></svg>
+                          Completed
+                        </span>
+                      ) : (
+                        <span className="flex flex-row items-center gap-1 text-xs font-semibold px-3 py-1.5 border border-yellow-800 bg-yellow-200 text-yellow-800 rounded-full">
+                          <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-loader"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 6l0 -3" /><path d="M16.25 7.75l2.15 -2.15" /><path d="M18 12l3 0" /><path d="M16.25 16.25l2.15 2.15" /><path d="M12 18l0 3" /><path d="M7.75 16.25l-2.15 2.15" /><path d="M6 12l-3 0" /><path d="M7.75 7.75l-2.15 -2.15" /></svg>
+                          Pending
+                        </span>
+                      )}
+                    </span>
                   </td>
                 </tr>
               ))}
