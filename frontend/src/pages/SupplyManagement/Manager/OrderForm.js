@@ -4,45 +4,45 @@ import axios from 'axios';
 
 const PREDEFINED_ITEMS = {
   'Cleaning': [
-    { id: 'det1', name: 'Detergents' },
-    { id: 'gc1', name: 'Glass Cleaner' },
-    { id: 'tc1', name: 'Tire Cleaner' },
-    { id: 'ic1', name: 'Interior Cleaner' },
-    { id: 'mc1', name: 'Microfiber Cloths' },
-    { id: 'sp1', name: 'Sponges' }
+    { id: 'det1', name: 'Detergents', price: 200 },
+    { id: 'gc1', name: 'Glass Cleaner', price: 150 },
+    { id: 'tc1', name: 'Tire Cleaner', price: 180 },
+    { id: 'ic1', name: 'Interior Cleaner', price: 220 },
+    { id: 'mc1', name: 'Microfiber Cloths', price: 100 },
+    { id: 'sp1', name: 'Sponges', price: 80 }
   ],
   'Polishing': [
-    { id: 'cw1', name: 'Car Wax' },
-    { id: 'ts1', name: 'Tire Shine' },
-    { id: 'lc1', name: 'Leather Conditioner' },
-    { id: 'fp1', name: 'Fabric Protector' }
+    { id: 'cw1', name: 'Car Wax', price: 300 },
+    { id: 'ts1', name: 'Tire Shine', price: 250 },
+    { id: 'lc1', name: 'Leather Conditioner', price: 350 },
+    { id: 'fp1', name: 'Fabric Protector', price: 280 }
   ],
   'Oils': [
-    { id: 'eo1', name: 'Engine Oil' },
-    { id: 'bo1', name: 'Brake Oil' },
-    { id: 'to1', name: 'Transmission Oil' }
+    { id: 'eo1', name: 'Engine Oil', price: 1500 },
+    { id: 'bo1', name: 'Brake Oil', price: 1200 },
+    { id: 'to1', name: 'Transmission Oil', price: 1800 }
   ],
   'Fluids': [
-    { id: 'co1', name: 'Coolant' },
-    { id: 'wf1', name: 'Windshield Fluid' }
+    { id: 'co1', name: 'Coolant', price: 600 },
+    { id: 'wf1', name: 'Windshield Fluid', price: 400 }
   ],
   'Filters': [
-    { id: 'af1', name: 'Air Filter' },
-    { id: 'of1', name: 'Oil Filter' },
-    { id: 'ff1', name: 'Fuel Filter' }
+    { id: 'af1', name: 'Air Filter', price: 900 },
+    { id: 'of1', name: 'Oil Filter', price: 750 },
+    { id: 'ff1', name: 'Fuel Filter', price: 1100 }
   ],
   'Tire': [
-    { id: 'tg1', name: 'Tire Gauge' },
-    { id: 'ti1', name: 'Tire Inflator' },
-    { id: 'ts1', name: 'Tire Sealant' }
+    { id: 'tg1', name: 'Tire Gauge', price: 550 },
+    { id: 'ti1', name: 'Tire Inflator', price: 2500 },
+    { id: 'ts1', name: 'Tire Sealant', price: 1300 }
   ],
   'Electrical': [
-    { id: 'bat1', name: 'Batteries' }
+    { id: 'bat1', name: 'Batteries', price: 6500 }
   ],
   'Other': [
-    { id: 'gr1', name: 'Grease' },
-    { id: 'sg1', name: 'Safety Gloves' },
-    { id: 'sgl1', name: 'Safety Glasses' }
+    { id: 'gr1', name: 'Grease', price: 300 },
+    { id: 'sg1', name: 'Safety Gloves', price: 200 },
+    { id: 'sgl1', name: 'Safety Glasses', price: 350 }
   ]
 };
 
@@ -79,9 +79,8 @@ const OrderForm = () => {
       const selectedSupplier = suppliers.find(s => s._id === formData.supplierID);
 
       if (selectedSupplier) {
-        const supplierCategory = selectedSupplier.category?.trim();
-        const items = supplierCategory ? PREDEFINED_ITEMS[supplierCategory] || [] : [];
-
+        const supplierCategory = selectedSupplier.category.trim();
+        const items = PREDEFINED_ITEMS[supplierCategory] || [];
 
         console.log('Supplier Category:', supplierCategory);
         console.log('Available Items:', items);
@@ -97,7 +96,7 @@ const OrderForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (name === 'itemID') {
       // Find the selected item
       const selectedItem = filteredItems.find(item => item.id === value);
@@ -116,15 +115,28 @@ const OrderForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Get full supplier and item objects based on selected IDs
+    const selectedSupplier = suppliers.find(s => s._id === formData.supplierID);
+    const selectedItem = filteredItems.find(item => item.id === formData.itemID);
+
+    // Create new order object including supplier name and item name
+    const orderToSubmit = {
+      ...formData,
+      supplier: selectedSupplier?.name || '',
+      itemName: selectedItem?.name || ''
+    };
+
     try {
-      await axios.post('http://localhost:8000/api/orders', formData);
+      await axios.post('http://localhost:8000/api/orders', orderToSubmit);
       alert('Order added successfully!');
-      navigate('/orders');
+      navigate('/suppliers/orders');
     } catch (error) {
       console.error('Error adding order:', error);
       alert('Failed to add order: ' + (error.response?.data?.message || error.message));
     }
   };
+
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
@@ -229,7 +241,7 @@ const OrderForm = () => {
           </button>
           <button
             type="button"
-            onClick={() => navigate('/orders')}
+            onClick={() => navigate('/suppliers/orders')}
             className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
           >
             Cancel

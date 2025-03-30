@@ -3,12 +3,12 @@ const Inventory = require("../models/inventorym");
 // ✅ Add a new inventory item
 const addInventoryItem = async (req, res) => {
     try {
-        const { itemName, category, Quantity, unitPrice, expiryDate, manufactureDate, reorderLevel } = req.body;
+        const { itemName, category, stock, unitPrice, expiryDate, manufactureDate, reorderLevel } = req.body;
 
         const newItem = new Inventory({
             itemName,
             category,
-            Quantity,
+            stock,
             unitPrice,
             expiryDate,
             manufactureDate,
@@ -22,25 +22,6 @@ const addInventoryItem = async (req, res) => {
     }
 };
 
-// ✅ Update stock manually
-const updateStock = async (req, res) => {
-    try {
-        const { id, stock } = req.body;
-
-        const item = await Inventory.findById(id);
-        if (!item) return res.status(404).json({ message: "Item not found" });
-
-        item.Quantity = Quantity;
-        item.totalCost = item.Quantity * item.unitPrice;
-        await item.save();
-
-        checkReorderLevel(item);  // Check reorder level after stock update
-
-        res.json({ message: "Stock updated successfully", item });
-    } catch (error) {
-        res.status(500).json({ message: "Error updating stock", error });
-    }
-};
 
 // ✅ Fetch all inventory items
 const getInventory = async (req, res) => {
@@ -94,14 +75,49 @@ const deleteInventoryItem = async (req, res) => {
 const checkReorderLevel = async (item) => {
     if (item.Quantity <= item.reorderLevel) {
         console.log(`🔴 Low stock alert: ${item.itemName} has reached the reorder level.`);
-        // You can extend this to store notifications in a DB table
     }
 };
 
+// ✅ Update an inventory item (all fields, including stock)
+const updateInventoryItem = async (req, res) => {
+    try {
+        const { id } = req.params; // Get item ID from request params
+        const updatedData = req.body; // Get updated data from request body
+
+        // Find the item by ID and update it with new data
+        const item = await Inventory.findById(id);
+        if (!item) return res.status(404).json({ message: "Item not found" });
+
+        // Update all fields dynamically from the request body
+        Object.keys(updatedData).forEach((key) => {
+            if (key in item) {
+                item[key] = updatedData[key];
+            }
+        });
+
+        // Recalculate totalCost if stock or unitPrice is updated
+        if (updatedData.stock || updatedData.unitPrice) {
+            item.totalCost = item.stock * item.unitPrice;
+        }
+
+        await item.save();
+
+        // Check reorder level after updating stock
+        if (updatedData.stock) {
+            checkReorderLevel(item);
+        }
+
+        res.json({ message: "Inventory item updated successfully", item });
+    } catch (error) {
+        res.status(500).json({ message: "Error updating inventory item", error });
+    }
+};
+
+
 module.exports = {
     addInventoryItem,
-    updateStock,
     getInventory,
     useStock,
-    deleteInventoryItem
+    deleteInventoryItem,
+    updateInventoryItem // Export newly added function
 };

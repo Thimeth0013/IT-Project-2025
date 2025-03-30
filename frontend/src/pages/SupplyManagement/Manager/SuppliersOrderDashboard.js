@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-import SupplierManagerNavbar from '../../../components/SupplyManagement/Navbar';
+// import SupplierManagerNavbar from '../../../components/SupplyManagement/Navbar';
 
 function SuppliersOrderDashboard() {
   const [orders, setOrders] = useState([]);
@@ -37,15 +37,28 @@ function SuppliersOrderDashboard() {
     setStats(stats);
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this order?')) {
+  const handleReject = async (id) => {
+    if (window.confirm('Are you sure you want to reject this order?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/orders/${id}`);
+        await axios.put(`http://localhost:8000/api/orders/${id}`, { status: 'Rejected' });
+        alert('Order rejected successfully');
         fetchOrders();
-        alert('Order deleted successfully');
       } catch (error) {
-        console.error('Error deleting order:', error);
-        alert('Error deleting order: ' + error.message);
+        console.error('Error rejecting order:', error);
+        alert('Error rejecting order: ' + error.message);
+      }
+    }
+  };
+
+  const handleApprove = async (id) => {
+    if (window.confirm('Are you sure you want to approve this order?')) {
+      try {
+        await axios.put(`http://localhost:8000/api/orders/${id}`, { status: 'Approved' });
+        alert('Order approved successfully');
+        fetchOrders();
+      } catch (error) {
+        console.error('Error approving order:', error);
+        alert('Error approving order: ' + error.message);
       }
     }
   };
@@ -59,11 +72,9 @@ function SuppliersOrderDashboard() {
 
   return (
     <>
-      <SupplierManagerNavbar />
+      {/* <SupplierManagerNavbar /> */}
 
-      <div className="text-white bg-gray-800 container mx-auto p-4"
-        style={{ height: 'calc(100vh - 72px)' }}
-      >
+      <div className="h-screen text-white bg-gray-800 container mx-auto p-4">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-4">
             <Link
@@ -133,6 +144,11 @@ function SuppliersOrderDashboard() {
                           <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l5 5l10 -10" /></svg>
                           Accepted
                         </span>
+                      ) : order.status === 'Approved' ? (
+                        <span className="flex flex-row items-center gap-1 text-xs font-semibold px-3 py-1.5 border border-green-800 bg-green-800 text-white rounded-full">
+                          <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M9 14l2 2l4 -4" /></svg>
+                          Approved
+                        </span>
                       ) : order.status === 'Delivering' ? (
                         <span className="flex flex-row items-center gap-1 text-xs font-semibold px-3 py-1.5 border border-yellow-800 bg-yellow-200 text-yellow-800 rounded-full">
                           <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-truck-delivery"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" /><path d="M3 9l4 0" /></svg>
@@ -148,29 +164,63 @@ function SuppliersOrderDashboard() {
                           <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
                           Declined
                         </span>
+                      ) : order.status === 'Rejected' ? (
+                        <span className="flex flex-row items-center gap-1 text-xs font-semibold px-3 py-1.5 border border-red-800 bg-red-800 text-white rounded-full">
+                          <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-ban"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M5.7 5.7l12.6 12.6" /></svg>
+                          Rejected
+                        </span>
+                      ) : order.status === 'Delivered' ? (
+                        <span className="flex flex-row items-center gap-1 text-xs font-semibold px-3 py-1.5 border border-gray-800 bg-gray-200 text-gray-800 rounded-full">
+                          <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-package"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" /><path d="M12 12l8 -4.5" /><path d="M12 12l0 9" /><path d="M12 12l-8 -4.5" /><path d="M16 5.25l-8 4.5" /></svg>
+                          Delivered
+                        </span>
                       ) : (
                         <span className="flex flex-row items-center gap-1 text-xs font-semibold px-3 py-1.5 border border-gray-800 bg-gray-200 text-gray-800 rounded-full">
                           <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-alert-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><circle cx={12} cy={12} r={9} /><line x1={12} y1={8} x2={12} y2={12} /><line x1={12} y1={16} x2={12.01} y2={16} /></svg>
                           Undefined
                         </span>
                       )}
-                      {order.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <span className="flex flex-row items-center gap-1">
-                      <Link to={`/orders/edit/${order._id}`} className="flex flex-row items-center gap-1 text-indigo-600 hover:text-indigo-900 mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(order._id)}
-                        className="flex flex-row items-center gap-1 text-red-600 hover:text-red-900"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
-                        Delete
-                      </button>
-                    </span>
+                    {order.status === 'Delivered' ? (
+                      <span className="flex flex-row items-center justify-center gap-1">
+                        <button
+                          onClick={() => handleReject(order._id)}
+                          className="flex flex-row items-center gap-1 text-red-600 mr-4 px-2 py-1 rounded-md border border-red-600 hover:bg-red-600 hover:text-white"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                          Reject
+                        </button>
+                        <button
+                          onClick={() => handleApprove(order._id)}
+                          className="flex flex-row items-center gap-1 text-green-600 px-2 py-1 rounded-md border border-green-600 hover:bg-green-600 hover:text-white"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l5 5l10 -10" /></svg>
+                          Approve
+                        </button>
+                      </span>
+                    ) : order.status === 'Processing' ? (
+                      <span className="flex flex-row items-center justify-center gap-1">
+                        <span className="text-sm text-gray-500 font-medium">No actions available</span>
+                      </span>
+                    ) : order.status === 'Accepted' ? (
+                      <span className="flex flex-row items-center justify-center gap-1">
+                        <span className="text-sm text-gray-500 font-medium">No actions available</span>
+                      </span>
+                    ) : order.status === 'Declined' ? (
+                      <span className="flex flex-row items-center justify-center gap-1">
+                        <span className="text-sm text-gray-500 font-medium">No actions available</span>
+                      </span>
+                    ) : order.status === 'Delivering' ? (
+                      <span className="flex flex-row items-center justify-center gap-1">
+                        <span className="text-sm text-gray-500 font-medium">No actions available</span>
+                      </span>
+                    ) : (
+                      <span className="flex flex-row items-center justify-center gap-1">
+                        <span className="text-sm text-gray-500 font-medium">No actions available</span>
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -7,6 +7,10 @@ import CustomerHome from './pages/CustomerWebsite/cHome'
 import BookingForm from './components/customerWebsite/BookingForm';
 import SlotSelection from "./components/customerWebsite/SlotSelectBooking";
 import About from './pages/CustomerWebsite/AboutC'
+import Services from './pages/CustomerWebsite/ServicesC';
+import ContactC from './pages/CustomerWebsite/ContactC'
+import CustomerProfile from './pages/CustomerWebsite/CustomerProfile';
+import YourBookings from './pages/CustomerWebsite/YourBookings';
 import LoginC from './components/customerWebsite/LoginC';  // Your Login component
 import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp component
 
@@ -14,7 +18,6 @@ import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp compo
 import Admin  from './pages/SystemWebsite/Admin';
 import CustomerM from './pages/SystemWebsite/CustomerM';
 import AddUserForm from './components/systemWebsite/systemLayout/AddUserForm';
-import BookingList from './components/systemWebsite/BookingList';
 
 //pettycash
 import PettyCashHome from  './pages/PettyCashHome';
@@ -51,16 +54,18 @@ function App() {
         <Route path='/About' element={<About/>}/>
         
         {/* Customer Website*/}
-
         <Route path='/' element={<CustomerHome/>} />
         <Route path="/SlotSelectBooking" element={<SlotSelection />} />
         <Route path='/BookingForm' element={<BookingForm/>}/>
         <Route path='/About' element={<About/>}/>
         <Route path="/LoginC" element={<LoginC />} /> 
         <Route path="/SignUpC" element={<SignUpC />} /> 
-        <Route path='/BookingList' element={<BookingList/>}/>
-
+        <Route path='/Services' element={<Services/>}/>
+        <Route path='/Contact' element={<ContactC/>}/>
+        <Route path="/CustomerProfile" element={<CustomerProfile/>}/>
+        <Route path="/your-bookings" element={<YourBookings />} />
         {/* System Website*/}
+        
 
         {/* Supplier */}
         <Route path="/suppliers" element={<SuppliersHomepage />} />

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-import SupplierManagerNavbar from '../../../components/SupplyManagement/Navbar';
+// import SupplierManagerNavbar from '../../../components/SupplyManagement/Navbar';
 
 function SuppliersItemDashboard() {
   const [items, setItems] = useState([]);
@@ -46,11 +46,9 @@ function SuppliersItemDashboard() {
 
   return (
     <>
-      <SupplierManagerNavbar />
+      {/* <SupplierManagerNavbar /> */}
 
-      <div className="text-white bg-gray-800 container mx-auto p-4"
-        style={{ height: 'calc(100vh - 72px)' }}
-      >
+      <div className="h-screen text-white bg-gray-800 container mx-auto p-4">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-4">
             <Link

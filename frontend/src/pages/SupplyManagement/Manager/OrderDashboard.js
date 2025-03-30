@@ -146,6 +146,12 @@ const OrderDashboard = () => {
             {orders.map((order) => (
               <tr key={order._id}>
                 <td className="px-6 py-4">
+                  <div className="text-sm text-gray-900">{order.supplier}</div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="text-sm text-gray-900">{order.itemName}</div>
+                </td>
+                <td className="px-6 py-4">
                   <div className="text-sm text-gray-900">{order.orderDetails}</div>
                 </td>
                 <td className="px-6 py-4">
