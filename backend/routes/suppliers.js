@@ -1,6 +1,15 @@
 const router = require('express').Router();
 const suppliersModel = require('../models/supplier/suppliers');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
 
 // Get all suppliers
 router.get('/', async (req, res) => {
@@ -38,13 +47,13 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         // Generate username from name
-        const username = req.body.name.toLowerCase().replace(/\s+/g, '') + 
-                        Math.floor(Math.random() * 1000);
+        const username = req.body.name.toLowerCase().replace(/\s+/g, '') +
+            Math.floor(Math.random() * 1000);
 
         // Generate random password
-        const password = Math.random().toString(36).slice(-8) + 
-                        Math.random().toString(36).toUpperCase().slice(-2) + 
-                        Math.floor(Math.random() * 10);
+        const password = Math.random().toString(36).slice(-8) +
+            Math.random().toString(36).toUpperCase().slice(-2) +
+            Math.floor(Math.random() * 10);
 
         // Create supplier with credentials
         const supplierData = {
@@ -54,6 +63,27 @@ router.post('/', async (req, res) => {
         };
 
         const supplier = await suppliersModel.create(supplierData);
+
+        // Send email with credentials
+        transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: supplier.email,
+            subject: 'Supplier account created',
+            text: `
+                Dear ${supplierData.name},
+
+                Your supplier account has been created successfully.
+
+                Here are your login credentials:
+                Email: ${supplierData.email}
+                Password: ${req.body.password}
+
+                Please keep this information secure.
+
+                Regards,
+                FixMate Team
+            `
+        });
 
         return res.status(201).json({
             success: true,
@@ -113,8 +143,8 @@ router.post('/login', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const supplier = await suppliersModel.findByIdAndUpdate(
-            req.params.id, 
-            req.body, 
+            req.params.id,
+            req.body,
             { new: true }
         );
         return res.status(200).json({ success: true, supplier });

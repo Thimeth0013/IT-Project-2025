@@ -1,34 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
-import SupplierManagerNavbar from "../../../components/SupplyManagement/Navbar";
+// import SupplierManagerNavbar from "../../../components/SupplyManagement/Navbar";
 
 function SuppliersHomepage() {
     return (
         <>
-            <SupplierManagerNavbar />
+            {/* <SupplierManagerNavbar /> */}
 
-            <div className="bg-gray-100 flex items-center justify-center"
-                style={{ minHeight: "calc(100vh - 72px)" }}
-            >
+            <div className="h-screen bg-gray-100 flex items-center justify-center">
                 <div className="container mx-auto px-4">
                     <div className="flex justify-center items-center gap-4 mb-12">
                         <h1 className="text-4xl font-bold">
                             Supply Management System
                         </h1>
-                        {/* <Link
-                            to="/suppliers/suppliers"
-                            className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition-all transform hover:scale-105"
-                        >
-                            Supplier Orders
-                        </Link> */}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center max-w-7xl mx-auto">
-                        {/* Supplier Button */}
+                        {/* Supplier Management */}
                         <Link
                             to="/suppliers/all"
-                            className="bg-blue-500 hover:bg-blue-600 text-white p-8 rounded-xl shadow-lg transition-all transform hover:scale-105"
+                            className="bg-blue-500 hover:bg-blue-600 text-white p-8 rounded-xl shadow-lg transition-all transform hover:scale-105 h-64 flex flex-col justify-center"
                         >
                             <div className="text-center">
                                 <h2 className="text-3xl font-bold mb-4">Supplier Management</h2>
@@ -38,10 +29,10 @@ function SuppliersHomepage() {
                             </div>
                         </Link>
 
-                        {/* Order Button */}
+                        {/* Order Management */}
                         <Link
                             to="/suppliers/orders"
-                            className="bg-purple-500 hover:bg-purple-600 text-white p-8 rounded-xl shadow-lg transition-all transform hover:scale-105"
+                            className="bg-purple-500 hover:bg-purple-600 text-white p-8 rounded-xl shadow-lg transition-all transform hover:scale-105 h-64 flex flex-col justify-center"
                         >
                             <div className="text-center">
                                 <h2 className="text-3xl font-bold mb-4">Order Management</h2>
@@ -51,10 +42,10 @@ function SuppliersHomepage() {
                             </div>
                         </Link>
 
-                        {/* Item Button */}
+                        {/* Item Management */}
                         <Link
                             to="/suppliers/items"
-                            className="bg-yellow-500 hover:bg-yellow-600 text-white p-8 rounded-xl shadow-lg transition-all transform hover:scale-105"
+                            className="bg-yellow-500 hover:bg-yellow-600 text-white p-8 rounded-xl shadow-lg transition-all transform hover:scale-105 h-64 flex flex-col justify-center"
                         >
                             <div className="text-center">
                                 <h2 className="text-3xl font-bold mb-4">Item Management</h2>
@@ -64,10 +55,10 @@ function SuppliersHomepage() {
                             </div>
                         </Link>
 
-                        {/* Stock Transaction Button */}
+                        {/* Stock Transactions */}
                         <Link
                             to="/suppliers/stock-transactions"
-                            className="bg-green-500 hover:bg-green-600 text-white p-8 rounded-xl shadow-lg transition-all transform hover:scale-105"
+                            className="bg-green-500 hover:bg-green-600 text-white p-8 rounded-xl shadow-lg transition-all transform hover:scale-105 h-64 flex flex-col justify-center"
                         >
                             <div className="text-center">
                                 <h2 className="text-3xl font-bold mb-4">Stock Transactions</h2>

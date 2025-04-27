@@ -19,9 +19,18 @@ const supplierSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    category: {  
+        type: String,
+        required: true
+    },
     password: {
         type: String,
         required: true
+    },
+    category: {
+        type: String,
+        required: true,
+        enum: ['Cleaning', 'Polishing', 'Oils', 'Fluids', 'Filters', 'Tire', 'Electrical', 'Other']
     },
     role: {
         type: String,
