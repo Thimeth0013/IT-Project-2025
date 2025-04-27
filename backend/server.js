@@ -3,8 +3,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-const { createServer } = require("http");
-const { Server } = require("socket.io");
+//const { createServer } = require("http");
+//const { Server } = require("socket.io");
+//import authRouter from './routes/auth.js'
+//import connectToDatabase from 
+
 
 // Import routes
 const itemRoutes = require('./routes/items');
@@ -16,22 +19,27 @@ const supplierRoutes = require('./routes/suppliers');
 
 const pettycashRoutes = require('./routes/pettycash');
 const bookingRoutes = require('./routes/bookingRoutes')
-const authRoutes = require('./routes/authRoutes');
+// commend kara const authRoutes = require('./routes/authRoutes');
 const inventoryR = require('./routes/inventoryR');
 
+const staffRoutes = require('./routes/staffs');  
+const salaryRoutes = require('./routes/salaries'); 
+const scheduleRoutes = require('./routes/schedules'); 
+
+
 const app = express(); 
-const server = createServer(app);
+//const server = createServer(app);
 
 // Create Socket.io instance
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST", "DELETE"],
-  },
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST", "DELETE"],
+//   },
+//});
 
 // Set io in app for use in routes
-app.set("socketio", io);
+//app.set("socketio", io);
 
 const PORT = process.env.PORT || 8000;
 
@@ -55,13 +63,18 @@ app.use('/api/stock_transactions', stockTransactionRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/pettycash', pettycashRoutes);
 //app.use('/api/booking', bookingtRoutes);
-app.use('/api', paymentRoutes);	
+//app.use('/api', paymentRoutes);	
 app.use("/inventory", inventoryR);
+app.use('/api/staff', staffRoutes); 
+
+app.use('/api/schedule', scheduleRoutes); 
+//app.use('/api/auth', authRouter)
+app.use("/api/salaries", salaryRoutes);
 
 // Start server
-server.listen(PORT, () => {
+  app.listen(PORT, () => {       //Change kra 25/3/25
 	console.log(`Server running on http://localhost:${PORT}`);
-});
+ }); 
 
 // Export 'io' and 'server' for use in other files
-module.exports = {io, server};
+//module.exports = {io, server}

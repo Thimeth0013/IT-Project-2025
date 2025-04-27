@@ -1,8 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+
+
+
+
+
+
 // import { Navigate } from 'react-router-dom';
 
-import HomePage from './pages/Home';
+//import HomePage from './pages/Home'; meka comment kara 3/21/2025
 // import CustomerLayout from './components/customerWebsite/CustomerLayout';
 // import CustomerHome from './pages/cHome'
 // import BookingForm from './components/customerWebsite/BookingForm';
@@ -19,15 +26,15 @@ import HomePage from './pages/Home';
 // import SignUpC from './components/customerWebsite/SignUpC'; // Your SignUp component
 
 // System Website
-import Admin  from './pages/SystemWebsite/Admin';
-import CustomerM from './pages/SystemWebsite/CustomerM';
-import AddUserForm from './components/systemWebsite/systemLayout/AddUserForm';
+// import Admin  from './pages/SystemWebsite/Admin';
+// import CustomerM from './pages/SystemWebsite/CustomerM';
+// import AddUserForm from './components/systemWebsite/systemLayout/AddUserForm'; oya okkoma coment kara  3.21.25
 
 //pettycash
 import PettyCashHome from  './pages/PettyCashHome';
 import PettyCashDashboard from './pages/PettyCashDashboard';
 // Import  payment   component
-import PaymentGateway from './components/PaymentGateway/payment';
+//import PaymentGateway from './components/PaymentGateway/payment';
 
 // import Supplier
 import ItemDashboard from './pages/SupplyManagement/Manager/SuppliersItemDashboard';
@@ -39,6 +46,9 @@ import SuppliersAll from './pages/SupplyManagement/Manager/SuppliersAll';
 import SupplierForm from './pages/SupplyManagement/Manager/SupplierNewForm';
 import SupplyDashboard from './pages/SupplyManagement/Manager/SupplyDashboard';
 import SupplyOrderList from './pages/SupplyManagement/Manager/SupplyOrderList';
+import AddStaffForm from './pages/addstaff';
+import StaffDashboard from './pages/staffdashboard';
+import EditStaffForm from './pages/editstaff';
 
 // import Supply
 import SupplierOrderRequestsDashboard from './pages/SupplyManagement/Supplier/SupplierOrderRequestsDashboard';
@@ -49,12 +59,16 @@ import SupplierOrderRequestsDashboard from './pages/SupplyManagement/Supplier/Su
 //import Addstock from './components/addstock';
 //import InventoryDashboard from './components/inventoryDash';
 
+//import staff management
+
+
+
 function App() {
   return (
     <Router>
       {/* <CustomerLayout> */}
       <Routes>
-        <Route path='/' element={<HomePage/>} />
+      {/*   <Route path='/' element={<HomePage/>} />  comment kara 3/21*/}
         {/* <Route path="/SlotSelectBooking" element={<SlotSelection />} /> */}
         {/* <Route path='/BookingForm' element={<BookingForm/>}/> */}
         {/* <Route path='/About' element={<CompanyOverview/>}/> */}
@@ -65,7 +79,7 @@ function App() {
         <Route path='/BookingForm' element={<BookingForm/>}/>
         <Route path='/About' element={<About/>}/>
         <Route path="/LoginC" element={<LoginC />} /> {/* Login route */}
-        <Route path="/SignUpC" element={<SignUpC />} /> {/* SignUp route */}
+       {/*  <Route path="/SignUpC" element={<SignUpC />} />* SignUp route */}
 
         {/* System Website*/}
 
@@ -90,19 +104,28 @@ function App() {
         <Route path="/AddUserForm" element={<AddUserForm/>} />
 
         <Route path="/CustomerM" element={<CustomerM/>}/>
-      
-     <Route path="/pettycash" element={<PettyCashHome />} />
-     <Route path="/pettycash/new" element={<PettyCashDashboard />} />
+     
      
         {/* Add Finance Management Routes */}
        {/* Add finance routes */}
 
-        <Route path="/payment" element={<PaymentGateway    />} />
-      {/* </PettyCash>  and payment*/}
+        {/*  <Route path="/payment" element={<PaymentGateway    />} />
+     </PettyCash>  and payment*/}
 
-      {/* </Inventory> */}
+      {/* </Inventory> 
       <Route path="/inventory" element={<InventoryDashboard />} />
-      <Route path="/add-stock" element={<Addstock />} />
+      <Route path="/add-stock" element={<Addstock />} /> */}
+      
+      
+         
+     <Route path="/pettycash" element={<PettyCashHome />} />
+     <Route path="/pettycash/new" element={<PettyCashDashboard />} />
+
+     {/* Staff Mangement */}
+     <Route path="/addstaff" element={<AddStaffForm />} />
+     <Route path="/staffd" element={<StaffDashboard />} />
+     <Route path="/editstaff/:id" element={<EditStaffForm />} />
+
       </Routes>
     
     </Router>
